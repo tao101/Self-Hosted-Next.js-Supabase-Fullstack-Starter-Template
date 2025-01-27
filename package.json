@@ -4,15 +4,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "supabase:genTypes:local": "supabase gen types --lang typescript --local > types/supabaseTypes.ts",
-    "supabase:genTypes:prod": "supabase gen types --lang typescript --db-url postgresql://postgres:bFxsPtJhurOg6gE2GWEeXujILmF6zF9L@supabase.mailscout.email/postgres > types/supabaseTypes.ts",
-    "supabase:dbPull:prod": "supabase db pull --db-url postgresql://postgres:bFxsPtJhurOg6gE2GWEeXujILmF6zF9L@supabase.mailscout.email/postgres",
-    "supabase:dbPush:local": "supabase db push --include-all --include-seed --db-url postgresql://postgres:bFxsPtJhurOg6gE2GWEeXujILmF6zF9L@supabase.mailscout.email/postgres",
-    "supabase:dbPush:prod": "supabase db push --include-all --include-seed --local",
-    "supabase:migrate:local": "supabase migration up --include-all --local",
-    "supabase:migrate:prod": "supabase migration up --include-all --db-url postgresql://postgres:bFxsPtJhurOg6gE2GWEeXujILmF6zF9L@supabase.mailscout.email/postgres",
-    "supabase:dump:prod": "supabase db dump --data-only --db-url postgresql://postgres:bFxsPtJhurOg6gE2GWEeXujILmF6zF9L@supabase.mailscout.email/postgres -f supabase/dbBackups/$(date +%Y-%m-%d-%H-%M).sql ",
-    "supabase:dbReset:local": "supabase db reset --local"
+    "supabase:genTypes": "supabase gen types --lang typescript --local > types/supabaseTypes.ts",
+    "supabase:dbPush": "supabase db push --include-all --include-seed --db-url postgresql://postgres:bFxsPtJhurOg6gE2GWEeXujILmF6zF9L@supabase.mailscout.email/postgres",
+    "supabase:migrate": "supabase migration up --include-all --local",
+    "supabase:dbReset": "supabase db reset --local"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
