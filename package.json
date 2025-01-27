@@ -1,13 +1,21 @@
 {
   "private": true,
   "scripts": {
+    "setup": "npm install && supabase start && npm run supabase:genTypes",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "supabase:genTypes": "supabase gen types --lang typescript --local > types/supabaseTypes.ts",
-    "supabase:dbPush": "supabase db push --include-all --include-seed --db-url postgresql://postgres:bFxsPtJhurOg6gE2GWEeXujILmF6zF9L@supabase.mailscout.email/postgres",
     "supabase:migrate": "supabase migration up --include-all --local",
-    "supabase:dbReset": "supabase db reset --local"
+    "supabase:local": "supabase start",
+    "supabase:reset": "supabase stop && supabase delete && npm run supabase:local",
+    "ci:check": "npm run lint && npm run test && npm run supabase:genTypes",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:update": "playwright test --update-snapshots"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -53,6 +61,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.50.0",
     "@types/node": "22.10.2",
     "@types/react": "^19.0.2",
     "@types/react-dom": "19.0.2",
