@@ -14,7 +14,7 @@ export default function GetStartedPage() {
             </h1>
             <Logo />
             <p className="text-base text-gray-600">
-              And discover emails effortlessly
+              app description
             </p>
           </div>
           <AuthForm />
