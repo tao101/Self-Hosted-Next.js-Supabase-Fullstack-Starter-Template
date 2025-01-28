@@ -149,3 +149,30 @@ Refer to the `package.json` scripts section in `architecture.md` for a descripti
 - **Tailwind CSS:** Use Tailwind CSS utility classes for styling. Follow Tailwind CSS best practices for maintainability.
 
 By following these guidelines, developers can effectively contribute to the SaaS template project and maintain a high level of code quality and development velocity.
+
+## API Documentation
+
+The project uses Swagger (OpenAPI) for API documentation generation. The documentation is automatically generated from JSDoc comments in your API route handlers.
+
+### Key Features:
+
+- **Local Development:** All API routes are documented when running locally
+- **Production:** Only routes in the `PUBLIC_API_ROUTES` array are documented
+- **Access:** Documentation is available at `/api-docs` in your Next.js application
+
+### Configuration:
+
+- Defined in `utils/api-docs.ts`
+- Public routes are specified in the `PUBLIC_API_ROUTES` array
+- Swagger UI is automatically generated based on environment:
+
+```typescript
+apis: process.env.NODE_ENV == "development"
+  ? ["./app/api/**/*.ts"] // All routes in development
+  : PUBLIC_API_ROUTES; // Only public routes in production
+```
+
+To access the API documentation:
+
+1. Run the application locally with `npm run dev`
+2. Visit `http://localhost:3000/api-docs`

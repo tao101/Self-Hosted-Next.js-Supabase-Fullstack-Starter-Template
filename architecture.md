@@ -18,6 +18,12 @@ This document outlines the architecture of the SaaS template project, built with
       - Third-party integrations (e.g., mobile apps, external websites).
       - Webhooks.
       - Scheduled tasks (if needed, orchestrated externally or using edge functions).
+    - **API Documentation:**
+      - Automatic Swagger documentation generation
+      - Accessible via `/api-docs` route
+      - Production environment only exposes routes in `PUBLIC_API_ROUTES`
+      - Development environment shows all API routes
+      - Configured through JSDoc comments in API route handlers
 
 3.  **Database (Self-hosted Supabase):**
     - Provides a complete backend-as-a-service (BaaS) solution.
@@ -120,7 +126,9 @@ Here's the general approach:
 - **Supabase CLI:** Command-line tool for managing Supabase projects.
 - **Coolify:** Open-source PaaS for deploying applications.
 - **Jest:** JavaScript testing framework.
-- **Legend State:** (Example) State management library for React.
+- **Legend State:** State management library for React.
+- **Swagger UI:** Automated API documentation
+- **swagger-jsdoc:** OpenAPI specification generation
 
 ## DX and Faster Development Cycle Focus
 

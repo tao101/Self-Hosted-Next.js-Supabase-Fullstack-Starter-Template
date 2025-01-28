@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "setup": "npm install && supabase start && npm run supabase:genTypes",
+    "setup": "supabase start && npm run supabase:genTypes",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -15,7 +15,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
-    "test:e2e:update": "playwright test --update-snapshots"
+    "test:e2e:update": "playwright test --update-snapshots",
+    "docs:generate": "tsc utils/api-docs.ts --outDir dist && node dist/utils/api-docs.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -57,6 +58,8 @@
     "react-hook-form": "^7.54.1",
     "server-only": "^0.0.1",
     "sonner": "^1.7.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-react": "^5.18.2",
     "vaul": "^1.1.2",
     "zod": "^3.24.1"
   },
@@ -65,6 +68,8 @@
     "@types/node": "22.10.2",
     "@types/react": "^19.0.2",
     "@types/react-dom": "19.0.2",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-react": "^4.19.0",
     "cross-env": "^7.0.3",
     "postcss": "8.4.49",
     "supabase": "latest",

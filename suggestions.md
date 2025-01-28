@@ -19,8 +19,6 @@ This document outlines suggestions for improving the SaaS template project, focu
 
 1.  **Comprehensive Documentation:**
 
-    - **API Documentation:** If you build out Next.js API routes, consider using tools like Swagger or OpenAPI to automatically generate API documentation.
-
 2.  **Performance Monitoring and Optimization:**
 
     - **Frontend Performance Monitoring:** Integrate tools like Sentry or New Relic to monitor frontend performance, track errors, and identify performance bottlenecks.
