@@ -148,7 +148,30 @@ Refer to the `package.json` scripts section in `architecture.md` for a descripti
 - **Component Library:** Utilize Shadcn UI component library for consistent and accessible UI elements.
 - **Tailwind CSS:** Use Tailwind CSS utility classes for styling. Follow Tailwind CSS best practices for maintainability.
 
+- **State Management:** Use Legend State for reactive state management across components. Legend State provides:
+  - Fine-grained reactivity with observable objects
+  - Automatic re-rendering of components when state changes
+  - Simple API for managing both local and global state
+  - Excellent TypeScript support
+  - Example usage from sidebar component:
+
 By following these guidelines, developers can effectively contribute to the SaaS template project and maintain a high level of code quality and development velocity.
+
+## Monitoring and Error Tracking
+
+The project uses Sentry for error tracking and performance monitoring. Key features:
+
+- Automatic error capturing in both client and server-side code
+- Performance monitoring for page loads and API routes
+- Environment-based configuration should be set in `.env.local` using `NEXT_PUBLIC_SENTRY_ENABLED`
+
+To configure Sentry:
+
+1. Set environment variables in `.env.local`:
+
+```env
+NEXT_PUBLIC_SENTRY_ENABLED=true
+```
 
 ## API Documentation
 
@@ -167,8 +190,8 @@ The project uses Swagger (OpenAPI) for API documentation generation. The documen
 - Swagger UI is automatically generated based on environment:
 
 ```typescript
-apis: process.env.NODE_ENV == "development"
-  ? ["./app/api/**/*.ts"] // All routes in development
+apis: process.env.NODE_ENV == 'development'
+  ? ['./app/api/**/*.ts'] // All routes in development
   : PUBLIC_API_ROUTES; // Only public routes in production
 ```
 

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { userStore } from "@/stores/userProvider";
-import { supabaseClient } from "@/utils/supabase/client";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { getUserRole } from "./(actions)/auth";
+import { userStore } from '@/stores/userProvider';
+import { supabaseClient } from '@/utils/supabase/client';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { getUserRole } from './(actions)/auth';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -13,7 +13,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const updateUserRole = async () => {
     let role = await getUserRole();
     userStore.role.set(role);
-    console.log("role ", role);
+    console.log('role ', role);
   };
 
   useEffect(() => {
@@ -21,17 +21,17 @@ export function Providers({ children }: { children: React.ReactNode }) {
     const {
       data: { subscription },
     } = supabaseClient.auth.onAuthStateChange(async (event, session) => {
-      console.log("event", event);
-      console.log("session", session);
+      console.log('event', event);
+      console.log('session', session);
       userStore.user.set(session?.user ?? undefined);
 
-      if (event === "SIGNED_OUT") {
-        router.push("/auth/get-started");
+      if (event === 'SIGNED_OUT') {
+        router.push('/auth/get-started');
         userStore.role.set(undefined);
         userStore.user.set(undefined);
-      } else if (event === "SIGNED_IN") {
-        if (pathname === "/auth/get-started") {
-          router.push("/dashboard");
+      } else if (event === 'SIGNED_IN') {
+        if (pathname === '/auth/get-started') {
+          router.push('/dashboard');
         }
       }
 
@@ -39,16 +39,16 @@ export function Providers({ children }: { children: React.ReactNode }) {
     });
 
     const roleSubscription = supabaseClient
-      .channel("user_roles_changes")
+      .channel('user_roles_changes')
       .on(
-        "postgres_changes",
+        'postgres_changes',
         {
-          event: "*",
-          schema: "public",
-          table: "user_roles",
+          event: '*',
+          schema: 'public',
+          table: 'user_roles',
         },
         (payload: { new: { [key: string]: any } }) => {
-          console.log("Role change received", payload);
+          console.log('Role change received', payload);
           let newRole = payload.new?.role ?? undefined;
           userStore.role.set(newRole);
         }

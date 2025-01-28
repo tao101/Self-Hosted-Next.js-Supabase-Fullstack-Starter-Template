@@ -9,7 +9,8 @@ This document outlines the architecture of the SaaS template project, built with
     - Handles user interface and user interactions.
     - Built using React, TypeScript, Tailwind CSS, and Shadcn UI.
     - Utilizes server-side rendering (SSR) and static site generation (SSG) where appropriate for performance and SEO.
-    - Manages application state using a state management library (e.g., Legend State).
+    - Manages application state using Legend State for reactive, fine-grained state management
+    - Integrated with Sentry for real-time error monitoring and performance tracking
 
 2.  **Backend (Next.js Actions & API Routes):**
 
@@ -126,9 +127,10 @@ Here's the general approach:
 - **Supabase CLI:** Command-line tool for managing Supabase projects.
 - **Coolify:** Open-source PaaS for deploying applications.
 - **Jest:** JavaScript testing framework.
-- **Legend State:** State management library for React.
 - **Swagger UI:** Automated API documentation
 - **swagger-jsdoc:** OpenAPI specification generation
+- **Sentry:** Application monitoring and error tracking
+- **Legend State:** Reactive state management library
 
 ## DX and Faster Development Cycle Focus
 
@@ -141,3 +143,6 @@ This architecture is designed to prioritize:
 - **Clear Workflow:** Defined branching and PR strategies streamline collaboration and code management.
 
 By focusing on these aspects, the SaaS template aims to provide a solid foundation for building and scaling applications efficiently.
+
+- **Observability:** Sentry integration provides real-time insights into application errors and performance
+- **Predictable State:** Legend State's observable-based state management ensures consistent data flow

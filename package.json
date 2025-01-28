@@ -6,18 +6,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest",
-    "test:watch": "jest --watch",
     "supabase:genTypes": "supabase gen types --lang typescript --local > types/supabaseTypes.ts",
     "supabase:migrate": "supabase migration up --include-all --local",
     "supabase:local": "supabase start",
     "supabase:reset": "supabase stop && supabase delete && npm run supabase:local",
-    "ci:check": "npm run lint && npm run test && npm run supabase:genTypes",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:debug": "playwright test --debug",
-    "test:e2e:update": "playwright test --update-snapshots",
-    "docs:generate": "tsc utils/api-docs.ts --outDir dist && node dist/utils/api-docs.js"
+    "ci:check": "npm run lint && npm run test ",
+    "test": "playwright test"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

@@ -11,23 +11,7 @@ This document outlines suggestions for improving the SaaS template project, focu
 
 2.  **Enhanced Local Development Setup:**
 
-    - **Supabase Studio Integration:** Explore ways to better integrate Supabase Studio into the local development workflow. Perhaps scripts to automatically open Supabase Studio in the browser when `supabase start` is run.
     - **Database Seeding:** Create scripts to seed the local Supabase database with realistic sample data for easier development and testing of UI components and features.
-    - **Hot Reload for Supabase Migrations:** Investigate if there are ways to improve the migration development loop, potentially with faster feedback when making schema changes. (This might be limited by the nature of database migrations).
-
-## Code Quality and Maintainability
-
-1.  **Comprehensive Documentation:**
-
-2.  **Performance Monitoring and Optimization:**
-
-    - **Frontend Performance Monitoring:** Integrate tools like Sentry or New Relic to monitor frontend performance, track errors, and identify performance bottlenecks.
-    - **Backend Performance Monitoring:** Monitor Supabase database performance and Next.js backend performance. Implement caching strategies where appropriate.
-
-3.  **Security Best Practices:**
-    - **Security Audits:** Conduct regular security audits of the codebase and dependencies to identify and address potential vulnerabilities.
-    - **Input Validation:** Ensure robust input validation on both frontend and backend using Zod to prevent common security issues like injection attacks.
-    - **Rate Limiting and защитные механизмы:** Implement rate limiting and other защитные механизмы for API routes to prevent abuse.
 
 ## CI/CD and Deployment
 

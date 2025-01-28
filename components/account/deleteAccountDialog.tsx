@@ -26,6 +26,8 @@ export default function DeleteAccountDialog() {
       return;
     }
 
+    let a = 1;
+
     try {
       // TODO: Implement actual account deletion logic here
       console.log('Deleting account...');
