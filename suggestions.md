@@ -30,19 +30,3 @@ This document outlines suggestions for improving the SaaS template project, focu
 4.  **Continuous Integration Improvements:**
     - **Faster CI Pipelines:** Optimize CI pipelines for speed. Explore caching strategies and parallelization to reduce CI build and test times.
     - **Linters and Formatters in CI:** Ensure linters (ESLint) and formatters (Prettier) are run in the CI pipeline to automatically enforce code style.
-
-## Onboarding New Developers
-
-1.  **Detailed Onboarding Guide:**
-
-    - Create a comprehensive onboarding guide for new developers, covering project setup, development workflow, coding conventions, and best practices. This documentation itself is a good start!
-    - Include a "quick start" section in the `documentation.md` for very fast setup.
-
-2.  **Mentorship Program:**
-
-    - Consider implementing a mentorship program where experienced developers mentor new team members to help them get up to speed quickly and effectively.
-
-3.  **"Good First Issues" for New Contributors:**
-    - If the project is open-source or you plan to accept external contributions, label some issues as "good first issues." These should be relatively simple tasks that are suitable for new contributors to get started with the project.
-
-By considering and implementing these suggestions, you can continuously improve the SaaS template project, making it more robust, developer-friendly, and easier to maintain over time.

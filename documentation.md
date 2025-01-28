@@ -77,9 +77,9 @@ H -- Pass --> I{Merge Staging to Production};
 H -- Fail --> B;
 I --> J[Automated Deploy to Production Coolify];
 J --> K[Production Environment Live];
-style B fill:#000,stroke:#333,stroke-width:2px
-style G fill:#000,stroke:#333,stroke-width:2px
-style J fill:#000,stroke:#333,stroke-width:2px
+style B fill:#fff,stroke:#333,stroke-width:2px
+style G fill:#fff,stroke:#333,stroke-width:2px
+style J fill:#fff,stroke:#333,stroke-width:2px
 ```
 
 ## Branching and Pull Requests
