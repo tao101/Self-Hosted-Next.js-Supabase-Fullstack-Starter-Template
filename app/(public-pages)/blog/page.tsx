@@ -1,4 +1,3 @@
-import { Header } from "@/components/header/header";
 import Logo from "@/components/logo";
 
 export default async function BlogPage() {

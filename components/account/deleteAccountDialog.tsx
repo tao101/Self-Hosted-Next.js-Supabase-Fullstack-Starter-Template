@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { deleteUserAccount } from '@/app/(actions)/auth';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,42 +8,42 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
-import { deleteUserAccount } from "@/app/(actions)/auth";
-import { redirect, useRouter } from "next/navigation";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function DeleteAccountDialog() {
   const [isOpen, setIsOpen] = useState(false);
-  const [confirmText, setConfirmText] = useState("");
+  const [confirmText, setConfirmText] = useState('');
   const router = useRouter();
 
   const handleDeleteAccount = async () => {
-    if (confirmText.toLowerCase() !== "delete my account") {
+    if (confirmText.toLowerCase() !== 'delete my account') {
       toast.error("Please type 'delete my account' to confirm.");
       return;
     }
 
     try {
       // TODO: Implement actual account deletion logic here
-      console.log("Deleting account...");
+      console.log('Deleting account...');
       let { data, error } = await deleteUserAccount();
-      console.log("deleteUserAccount data", data);
-      console.log("deleteUserAccount error", error);
+      console.log('deleteUserAccount data', data);
+      console.log('deleteUserAccount error', error);
       if (error) {
         throw error;
       }
-      toast.success("Your account has been successfully deleted.");
+      toast.success('Your account has been successfully deleted.');
       setIsOpen(false);
       router.refresh();
 
       // Redirect to home page or login page after successful deletion
     } catch (error) {
-      console.error("Error deleting account:", error);
+      console.error('Error deleting account:', error);
       toast.error(
-        "An error occurred while deleting your account. Please try again."
+        'An error occurred while deleting your account. Please try again.'
       );
     }
   };
@@ -63,7 +63,7 @@ export default function DeleteAccountDialog() {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <Label htmlFor="confirm-delete" className="text-left">
-            Type 'delete my account' to confirm:
+            Type &apos;delete my account&apos; to confirm:
           </Label>
           <Input
             id="confirm-delete"
