@@ -71,15 +71,15 @@ C --> D{Create Pull Request to Staging};
 D --> E{Code Review & Automated Tests};
 E -- Pass --> F[Merge to Staging];
 E -- Fail --> B;
-F --> G[Automated Deploy to Staging (Coolify)];
+F --> G[Automated Deploy to Staging coolify];
 G --> H[Test on Staging Environment];
 H -- Pass --> I{Merge Staging to Production};
 H -- Fail --> B;
-I --> J[Automated Deploy to Production (Coolify)];
+I --> J[Automated Deploy to Production Coolify];
 J --> K[Production Environment Live];
-style B fill:#ccf,stroke:#333,stroke-width:2px
-style G fill:#f9f,stroke:#333,stroke-width:2px
-style J fill:#f9f,stroke:#333,stroke-width:2px
+style B fill:#000,stroke:#333,stroke-width:2px
+style G fill:#000,stroke:#333,stroke-width:2px
+style J fill:#000,stroke:#333,stroke-width:2px
 ```
 
 ## Branching and Pull Requests

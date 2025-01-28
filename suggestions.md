@@ -8,7 +8,6 @@ This document outlines suggestions for improving the SaaS template project, focu
 
     - **Integration Tests:** Implement integration tests to test the interaction between Next.js actions/API routes and Supabase. Tools like Playwright or Cypress could be used for end-to-end testing as well.
     - **Testing Utilities:** Create helper functions and utilities to simplify writing tests, such as mocking Supabase clients or setting up test databases.
-    - **Code Coverage:** Set up code coverage reports to track the percentage of code covered by tests and identify areas that need more testing.
 
 2.  **Enhanced Local Development Setup:**
 
@@ -16,20 +15,11 @@ This document outlines suggestions for improving the SaaS template project, focu
     - **Database Seeding:** Create scripts to seed the local Supabase database with realistic sample data for easier development and testing of UI components and features.
     - **Hot Reload for Supabase Migrations:** Investigate if there are ways to improve the migration development loop, potentially with faster feedback when making schema changes. (This might be limited by the nature of database migrations).
 
-3.  **Component Storybook:**
-
-    - Set up Storybook to showcase and develop UI components in isolation. This improves component reusability, visual testing, and documentation of UI elements.
-
-4.  **Code Generation Tools:**
-    - Explore code generation tools to automate repetitive tasks, such as generating forms, API route handlers, or CRUD operations based on database schemas. This can significantly speed up development.
-
 ## Code Quality and Maintainability
 
 1.  **Comprehensive Documentation:**
 
     - **API Documentation:** If you build out Next.js API routes, consider using tools like Swagger or OpenAPI to automatically generate API documentation.
-    - **Component Documentation (Storybook):** Document React components within Storybook with clear descriptions, usage examples, and props documentation.
-    - **Architecture Decision Records (ADRs):** For significant architectural decisions, consider writing ADRs to document the decision-making process, alternatives considered, and the final decision. This helps with long-term project understanding.
 
 2.  **Performance Monitoring and Optimization:**
 

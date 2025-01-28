@@ -29,18 +29,20 @@ This document outlines the architecture of the SaaS template project, built with
 
 ```mermaid
 graph LR
+subgraph Coolify Server
 subgraph Next.js Application
-A[Frontend (React, Next.js)]
+A[Frontend  Next.js]
 subgraph Backend
 B[Next.js Actions]
-C[Next.js API Routes]
+C[Next.js API Routes for webhooks and shared apis]
 end
 end
 D[Self-hosted Supabase]
 A --> B & C
 B & C --> D
-style A fill:#f9f,stroke:#333,stroke-width:2px
-style D fill:#ccf,stroke:#333,stroke-width:2px
+end
+style A fill:#000,stroke:#333,stroke-width:2px
+style D fill:#fff,stroke:#333,stroke-width:2px
 ```
 
 ## Development Workflow
