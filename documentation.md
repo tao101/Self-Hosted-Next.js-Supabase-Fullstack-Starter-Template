@@ -134,7 +134,16 @@ _(This section can be expanded with more Coolify-specific details as needed)_
 
 ## Package.json Scripts
 
-Refer to the `package.json` scripts section in `architecture.md` for a description of the scripts available to streamline development tasks.
+The `package.json` file includes several scripts to streamline common development tasks:
+
+- `dev`: Starts the Next.js development server.
+- `build`: Builds the Next.js application for production.
+- `start`: Starts the Next.js production server.
+- `lint`: Runs ESLint for code linting.
+- `lint:fix`: Runs ESLint and automatically fixes linting errors where possible.
+- `test`: Runs Jest unit tests.
+- `test:watch`: Runs Jest unit tests in watch mode.
+- `supabase:genTypes`: Generates TypeScript types from your Supabase database schema.
 
 ## Code Style and Conventions
 
@@ -172,6 +181,62 @@ To configure Sentry:
 ```env
 NEXT_PUBLIC_SENTRY_ENABLED=true
 ```
+
+## Production Database Backups
+
+Production database backups are automated using GitHub Actions.
+
+### Setup
+
+1.  **GitHub Actions Secrets:**
+    - Navigate to your GitHub repository's "Settings" > "Secrets and variables" > "Actions".
+    - Ensure you have a repository secret named `SUPABASE_PRODUCTION_DB_URL` configured. This secret should contain the connection string (URL) to your production Supabase database. **This is critical for the backup script to connect to your database.**
+
+### How Backups Work
+
+- **Scheduled Daily Backups:** A GitHub Actions workflow defined in `.github/workflows/supabase-backup.yml` is scheduled to run daily at midnight UTC.
+- **Supabase CLI `backup` Command:** The workflow uses the supabase cli to executes the Supabase CLI command `supabase db backup --db-url $SUPABASE_DB_URL`.
+- **Automated Execution:** The GitHub Action automatically runs this script on the schedule and when manually triggered.
+
+### Manually Triggering Backups
+
+You can manually trigger a backup at any time:
+
+1.  Go to the "Actions" tab in your GitHub repository.
+2.  Find the "Supabase Backup" workflow in the left sidebar.
+3.  Click on the "Supabase Backup" workflow.
+4.  Click the "Run workflow" button.
+5.  (Optional) Select the branch to run the workflow on (usually `main` or `production`).
+6.  Click "Run workflow" to start the backup process.
+
+### Monitoring Backups
+
+- **Check Workflow Runs:** After manually triggering or waiting for a scheduled backup, you can monitor the workflow's execution in the "Actions" tab.
+- **Workflow Logs:** Click on the workflow run to view detailed logs, including the output of the `supabase db backup` command. Check the logs for any errors or issues during the backup process.
+
+### Backup Storage (Current Status and Future Improvements)
+
+- **Current Status:** The backup process now saves the database backup as a GitHub Artifact.
+- **GitHub Artifacts:** The backup is uploaded as an artifact named `supabase-backup` to the GitHub Actions workflow run.
+
+  - **Download Artifacts:** You can download the backup file (`supabase_backup_<timestamp>.sql`) from the workflow run summary page under the "Artifacts" section.
+  - **Retention:** GitHub Artifacts have a retention period (currently 90 days by default, but this can be configured for your repository). Backups will be automatically deleted after this period.
+  - **Size Limits:** Be aware of GitHub Artifact size limits. If your database backups are very large, they might exceed these limits, and the artifact upload could fail. For very large databases, consider using dedicated cloud storage solutions as outlined in "Future Improvements" below.
+
+- **Future Improvements:** To enhance backup security and restore capabilities, the following improvements are planned:
+  - **Cloud Storage Upload:** Modify the GitHub Actions workflow to upload the generated backup file to a cloud storage service like AWS S3, Google Cloud Storage, or Azure Blob Storage for long-term storage and more robust retention policies.
+  - **Backup Retention Policy:** If using cloud storage, implement a strategy to manage and retain backups (e.g., keep daily backups for a week, weekly backups for a month, etc.) and automate the deletion of old backups.
+  - **Automated Restore Process (Future):** Potentially develop scripts or documentation for easily restoring backups from cloud storage to your Supabase instance.
+
+For now, the backups are conveniently available as GitHub Artifacts for a limited retention period. For more robust and long-term backup storage, consider migrating to cloud storage as a next step.
+
+**To download a backup:**
+
+1.  Go to the "Actions" tab in your GitHub repository.
+2.  Click on the "Supabase Backup" workflow in the left sidebar.
+3.  Select the workflow run you want to download the backup from (e.g., the latest successful run).
+4.  Scroll down to the "Artifacts" section.
+5.  You should see an artifact named `supabase-backup`. Click on it to download the `supabase_backup_<timestamp>.sql` file containing your database backup.
 
 ## API Documentation
 

@@ -1,0 +1,39 @@
+name: Supabase Production Backup
+
+on:
+  schedule:
+    - cron: '0 0 */3 * *' # Every 3 days at midnight UTC
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # Or your preferred Node.js version
+
+      - name: Install Supabase CLI
+        run: npm install -g supabase
+
+      - name: Generate Backup Filename
+        id: filename
+        run: |
+          timestamp=$(date +%Y-%m-%d_%H-%M-%S)
+          echo "backup_filename=supabase_backup_${timestamp}.sql" >> $GITHUB_OUTPUT
+
+      - name: Run Supabase Backup
+        run: supabase db backup --db-url $SUPABASE_DB_URL > ${{ steps.filename.outputs.backup_filename }}
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_PRODUCTION_DB_URL }} # Make sure to set this secret in GitHub Actions
+
+      - name: Upload Backup to Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: supabase-backup
+          path: ${{ steps.filename.outputs.backup_filename }}

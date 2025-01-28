@@ -19,14 +19,3 @@ This document outlines suggestions for improving the SaaS template project, focu
 
     - Integrate end-to-end tests (using Playwright or Cypress) into the CI/CD pipeline to automatically run E2E tests on each PR and before deployments.
 
-2.  **Staging and Production Environment Parity:**
-
-    - Ensure that staging and production environments are as close to identical as possible to minimize environment-specific issues. Use infrastructure-as-code (IaC) principles if feasible to manage environment configurations.
-
-3.  **Deployment Rollback Strategy:**
-
-    - Define a clear deployment rollback strategy in case of issues after a new deployment. Coolify might offer features to assist with rollbacks.
-
-4.  **Continuous Integration Improvements:**
-    - **Faster CI Pipelines:** Optimize CI pipelines for speed. Explore caching strategies and parallelization to reduce CI build and test times.
-    - **Linters and Formatters in CI:** Ensure linters (ESLint) and formatters (Prettier) are run in the CI pipeline to automatically enforce code style.

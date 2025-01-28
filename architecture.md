@@ -31,6 +31,11 @@ This document outlines the architecture of the SaaS template project, built with
     - Handles database management (PostgreSQL), authentication, storage, and real-time functionality.
     - Self-hosted on Coolify for full control and customization.
     - Managed using Supabase CLI for local development and migrations.
+    - **Automated Production Backups**:
+        - every 3 days at midnight UTC backups of the production database are configured using GitHub Actions and the Supabase CLI.
+        - Backups are scheduled to run daily at midnight UTC via `.github/workflows/supabase-backup.yml`.
+        - **Note:** Backup files are currently not automatically stored in a separate storage location.  Further development is needed to upload backups to cloud storage (e.g., AWS S3, Google Cloud Storage) for secure retention and restore capabilities.
+
 
 ## Architecture Diagram
 
@@ -146,3 +151,9 @@ By focusing on these aspects, the SaaS template aims to provide a solid foundati
 
 - **Observability:** Sentry integration provides real-time insights into application errors and performance
 - **Predictable State:** Legend State's observable-based state management ensures consistent data flow
+
+## Deployment Rollback Strategy:
+
+//TODO: Add deployment rollback strategy
+
+
