@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test';
 import { supabaseAdminTest } from '../utils/supabaseTest';
 import { sleep } from '@/utils/utils';
 
-const ADMIN_EMAIL = `admin-${Date.now()}@example.com`;
-const USER_EMAIL = `user-${Date.now()}@example.com`;
+const ADMIN_EMAIL = `user-role-admin-${Date.now()}@example.com`;
+const USER_EMAIL = `user-role-user-${Date.now()}@example.com`;
 
 test.describe.serial('User Role Access Control', () => {
   let adminUserId: string;

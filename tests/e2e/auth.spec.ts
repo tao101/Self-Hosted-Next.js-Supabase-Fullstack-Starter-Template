@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { supabaseAdminTest } from '../utils/supabaseTest';
 import { sleep } from '@/utils/utils';
 
-const TEST_EMAIL = `auth-test-user-${Date.now()}@example.com`;
+export const TEST_EMAIL = `auth-test-user-${Date.now()}@example.com`;
 const TEST_FIRST_NAME = 'Test';
 const TEST_LAST_NAME = 'User';
 
@@ -136,6 +136,7 @@ test.describe.serial('Authentication Flow', () => {
     // Fill invalid OTP
     const otpInput = page.getByRole('textbox', { name: /OTP/i });
     await otpInput.fill(invalidOtp);
+
     await page.getByRole('button', { name: /Verify OTP/i }).click();
 
     // Verify error message
