@@ -1,27 +1,76 @@
 name: Playwright Tests
 on:
   push:
-    branches: [main, master, staging]
   pull_request:
-    branches: [main, master, staging]
+concurrency:
+  group: playwright-tests
+  cancel-in-progress: false
+
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    outputs:
+      report-url: ${{ steps.report-url.outputs.url }}
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+
+      - name: Install Supabase CLI
+        run: npm install -g supabase@latest
+
+      - name: Reset Test Database
+        env:
+          TEST_DB_URL: ${{ secrets.SUPABASE_TEST_DB_URL }}
+          SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY_TEST }}
+        run: supabase db reset --db-url $TEST_DB_URL
+
       - name: Install dependencies
-        run: npm install -g pnpm && pnpm install
+        run: npm install
+
       - name: Install Playwright Browsers
-        run: pnpm exec playwright install --with-deps
+        run: npx playwright install --with-deps
+
       - name: Run Playwright tests
-        run: pnpm exec playwright test
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_TEST_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_TEST_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY_TEST }}
+        run: npx playwright test
+
+      - name: Upload HTML Report
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+      - name: Generate Report URL
+        id: report-url
+        run: |
+          echo "url=https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_OUTPUT
+
+      - name: Add PR Comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🔍 **Playwright Test Report**\n\nView results: ${{ steps.report-url.outputs.url }}\nDownload artifact: [playwright-report](${{ steps.report-url.outputs.url }}/artifacts)`
+            })
+
+      - name: Add Commit Status
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{ secrets.GITHUB_TOKEN }}
+          context: Playwright Tests
+          description: View test report
+          state: ${{ job.status }}
+          target_url: ${{ steps.report-url.outputs.url }}

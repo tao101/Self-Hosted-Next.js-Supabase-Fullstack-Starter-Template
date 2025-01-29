@@ -7,12 +7,13 @@ const TEST_FIRST_NAME = 'Test';
 const TEST_LAST_NAME = 'User';
 
 test.beforeEach(async ({ page }) => {
+  await sleep(1000);
   await page.goto('/');
 });
 
-test.describe.serial('Authentication Flow', () => {
-  let testUserId: string; // Shared variable for the describe block
+let testUserId: string; // Shared variable for the describe block
 
+test.describe.serial('Authentication Flow', () => {
   test('should allow user to sign up with OTP', async ({ page }) => {
     await page.goto('/auth/get-started');
     // Switch to sign up form
@@ -111,12 +112,32 @@ test.describe.serial('Authentication Flow', () => {
     await expect(page.getByText(new RegExp(TEST_EMAIL, 'i'))).toBeTruthy();
   });
 
+  test.afterAll(async () => {
+    if (testUserId) {
+      await supabaseAdminTest.auth.admin.deleteUser(testUserId);
+    }
+  });
+});
+
+test.describe.parallel('Auth Form Validation', () => {
+  let testUserId: string;
+
   test('should reject invalid OTP attempts', async ({ page }) => {
     await page.goto('/auth/get-started');
 
+    await page.getByRole('button', { name: /Sign Up/i }).click();
+
+    await page.getByLabel('First Name').fill(TEST_FIRST_NAME);
+    await page.getByLabel('Last Name').fill(TEST_LAST_NAME);
+
     // Fill email form
     await page.getByLabel('Email').fill(TEST_EMAIL);
-    await page.getByRole('button', { name: /Send OTP & Magic Link/i }).click();
+    await page.getByRole('button', { name: /Register/i }).click();
+
+    // Wait for OTP verification form
+    await expect(
+      page.getByText(/Enter the 6-digit OTP sent to/i)
+    ).toBeVisible();
 
     // Wait for OTP verification form
     //await page.waitForSelector(':text-matches("6-digit", "i")');
@@ -127,6 +148,7 @@ test.describe.serial('Authentication Flow', () => {
       email: TEST_EMAIL,
     });
     const validOtp = data?.properties?.email_otp;
+    testUserId = data?.user?.id!;
     if (!validOtp) {
       throw new Error('Could not retrieve OTP from Supabase');
     }
@@ -147,6 +169,9 @@ test.describe.serial('Authentication Flow', () => {
     // Verify not logged in
     await page.goto('/dashboard/account');
     await expect(page).toHaveURL(/auth\/get-started/);
+
+    //delete test user
+    await supabaseAdminTest.auth.admin.deleteUser(testUserId);
   });
 
   test('should redirect unauthorized users to auth page', async ({ page }) => {
@@ -227,13 +252,22 @@ test.describe.serial('Authentication Flow', () => {
 
     // Check normalized email in verification message
     await expect(page.getByText(new RegExp(TEST_EMAIL, 'i'))).toBeVisible();
+
+    //get user otp to get thier id
+    const { data } = await supabaseAdminTest.auth.admin.generateLink({
+      type: 'magiclink',
+      email: TEST_EMAIL,
+    });
+    const otp = data?.properties?.email_otp;
+    testUserId = data?.user?.id!;
+
+    //delete test user
+    await supabaseAdminTest.auth.admin.deleteUser(testUserId);
   });
 
   test.afterAll(async () => {
     if (testUserId) {
-      const { error } =
-        await supabaseAdminTest.auth.admin.deleteUser(testUserId);
-      if (error) console.error('Cleanup error:', error);
+      await supabaseAdminTest.auth.admin.deleteUser(testUserId);
     }
   });
 });
