@@ -52,7 +52,7 @@ D[Self-hosted Supabase]
 A --> B & C
 B & C --> D
 end
-style A fill:#000,stroke:#333,stroke-width:2px
+style A fill:#0b0,stroke:#333,stroke-width:2px
 style D fill:#fff,stroke:#333,stroke-width:2px
 ```
 
