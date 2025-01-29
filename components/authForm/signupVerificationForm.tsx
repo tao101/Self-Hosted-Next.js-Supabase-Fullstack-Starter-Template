@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -13,19 +13,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { MailIcon } from "lucide-react";
-import { toast } from "sonner";
+} from '@/components/ui/form';
+import { MailIcon } from 'lucide-react';
+import { toast } from 'sonner';
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@/components/ui/input-otp";
-import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { supabaseClient } from "@/utils/supabase/client";
+} from '@/components/ui/input-otp';
+import { REGEXP_ONLY_DIGITS } from 'input-otp';
+import { supabaseClient } from '@/utils/supabase/client';
 
 const verificationSchema = z.object({
-  otp: z.string().length(6, "OTP must be exactly 6 characters"),
+  otp: z.string().length(6, 'OTP must be exactly 6 characters'),
 });
 
 type VerificationSchema = z.infer<typeof verificationSchema>;
@@ -44,7 +44,7 @@ export default function SignupVerificationForm({
   const form = useForm<VerificationSchema>({
     resolver: zodResolver(verificationSchema),
     defaultValues: {
-      otp: "",
+      otp: '',
     },
   });
 
@@ -52,32 +52,32 @@ export default function SignupVerificationForm({
     setIsLoading(true);
     try {
       // TODO: Implement OTP verification logic here
-      console.log("Verifying OTP:", data.otp);
+      console.log('Verifying OTP:', data.otp);
 
       const { data: supaData, error } = await supabaseClient.auth.verifyOtp({
         email,
         token: data.otp,
-        type: "email",
+        type: 'email',
       });
 
-      console.log("supaData", supaData);
-      console.log("error", error);
+      console.log('supaData', supaData);
+      console.log('error', error);
 
       if (error) {
         throw new Error(error.message);
       }
 
-      toast.success("Verification successful", {
-        description: "Your account has been successfully created.",
+      toast.success('Verification successful', {
+        description: 'Your account has been successfully created.',
       });
       onVerificationComplete();
     } catch (error) {
-      console.error("Verification error:", error);
-      toast.error("Error", {
+      console.error('Verification error:', error);
+      toast.error('Error', {
         description:
           error instanceof Error
             ? error.message
-            : "An error occurred during verification. Please try again.",
+            : 'An error occurred during verification. Please try again.',
       });
     } finally {
       setIsLoading(false);
@@ -107,7 +107,7 @@ export default function SignupVerificationForm({
               </FormControl>
               <FormMessage />
               <FormDescription>
-                Enter the 6-digit OTP sent to{" "}
+                Enter the 6-digit OTP sent to{' '}
                 <span className="font-bold">{email}</span> to complete your
                 registration, or click the magic link in the email.
               </FormDescription>

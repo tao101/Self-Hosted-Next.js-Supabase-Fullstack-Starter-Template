@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -13,13 +13,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { MailIcon } from "lucide-react";
-import { toast } from "sonner";
-import { supabaseClient } from "@/utils/supabase/client";
+} from '@/components/ui/form';
+import { MailIcon } from 'lucide-react';
+import { toast } from 'sonner';
+import { supabaseClient } from '@/utils/supabase/client';
 
 const emailSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().trim().email('Invalid email address').toLowerCase(),
 });
 
 type EmailSchema = z.infer<typeof emailSchema>;
@@ -34,7 +34,7 @@ export default function EmailForm({ onEmailSubmit }: EmailFormProps) {
   const form = useForm<EmailSchema>({
     resolver: zodResolver(emailSchema),
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
 
@@ -42,42 +42,43 @@ export default function EmailForm({ onEmailSubmit }: EmailFormProps) {
     setIsLoading(true);
     try {
       // TODO: Implement magic link / OTP sending logic here
-      console.log("Sending OTP to:", data.email);
+      console.log('Sending OTP to:', data.email);
 
       const { error, data: supaData } = await supabaseClient.auth.signInWithOtp(
         {
           email: data.email,
           options: {
             //emailRedirectTo: `${window.location.origin}/dashboard`,
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
             shouldCreateUser: false,
           },
         }
       );
 
-      console.log("supaData", supaData);
-      console.log("error", JSON.stringify(error));
+      console.log('supaData', supaData);
+      console.log('error', JSON.stringify(error));
 
       if (error) {
-        if (error.code === "otp_disabled") {
+        if (error.code === 'otp_disabled') {
           throw new Error(
-            "Email does not have an account. Please sign up first."
+            'Email does not have an account. Please sign up first.'
           );
         } else {
           throw new Error(error.message);
         }
       }
 
-      toast.success("OTP sent", {
-        description: "Check your email for the 6-digit OTP.",
+      toast.success('OTP sent', {
+        description: 'Check your email for the 6-digit OTP.',
       });
       onEmailSubmit(data.email);
     } catch (error) {
-      console.error("Authentication error:", error);
-      toast.error("Error", {
+      console.error('Authentication error:', error);
+      toast.error('Error', {
         description:
           error instanceof Error
             ? error.message
-            : "An error occurred while sending the OTP. Please try again.",
+            : 'An error occurred while sending the OTP. Please try again.',
       });
     } finally {
       setIsLoading(false);

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -13,15 +13,23 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { MailIcon } from "lucide-react";
-import { toast } from "sonner";
-import { supabaseClient } from "@/utils/supabase/client";
+} from '@/components/ui/form';
+import { MailIcon } from 'lucide-react';
+import { toast } from 'sonner';
+import { supabaseClient } from '@/utils/supabase/client';
 
 const registrationSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().trim().email('Invalid email address').toLowerCase(),
+  firstName: z
+    .string()
+    .trim()
+    .min(1, 'First name is required')
+    .max(50, 'First name too long'),
+  lastName: z
+    .string()
+    .trim()
+    .min(1, 'Last name is required')
+    .max(50, 'Last name too long'),
 });
 
 type RegistrationSchema = z.infer<typeof registrationSchema>;
@@ -38,9 +46,9 @@ export default function RegistrationForm({
   const form = useForm<RegistrationSchema>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
-      email: "",
-      firstName: "",
-      lastName: "",
+      email: '',
+      firstName: '',
+      lastName: '',
     },
   });
 
@@ -48,10 +56,14 @@ export default function RegistrationForm({
     setIsLoading(true);
     try {
       // TODO: Implement registration logic here
-      console.log("Registration data:", data);
+      console.log('Registration data:', data);
+
+      const parsedData = registrationSchema.parse(data);
+      
 
       let firstName =
-        data.firstName.charAt(0).toUpperCase() + data.firstName.slice(1);
+        parsedData.firstName.charAt(0).toUpperCase() +
+        parsedData.firstName.slice(1);
       let lastName =
         data.lastName.charAt(0).toUpperCase() + data.lastName.slice(1);
 
@@ -71,25 +83,25 @@ export default function RegistrationForm({
         }
       );
 
-      console.log("supaData", supaData);
-      console.log("error", error);
+      console.log('supaData', supaData);
+      console.log('error', error);
 
       if (error) {
         throw new Error(error.message);
       }
 
-      toast.success("Registration initiated", {
+      toast.success('Registration initiated', {
         description:
-          "Check your email for the OTP to complete your registration.",
+          'Check your email for the OTP to complete your registration.',
       });
       onRegistrationComplete(data.email);
     } catch (error) {
-      console.error("Registration error:", error);
-      toast.error("Error", {
+      console.error('Registration error:', error);
+      toast.error('Error', {
         description:
           error instanceof Error
             ? error.message
-            : "An error occurred while sending the OTP. Please try again.",
+            : 'An error occurred while sending the OTP. Please try again.',
       });
     } finally {
       setIsLoading(false);
