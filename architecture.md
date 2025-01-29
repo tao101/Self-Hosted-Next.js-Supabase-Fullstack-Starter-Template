@@ -36,25 +36,62 @@ This document outlines the architecture of the SaaS template project, built with
       - Backups are scheduled to run daily at midnight UTC via `.github/workflows/supabase-backup.yml`.
       - **Note:** Backup files are currently not automatically stored in a separate storage location. Further development is needed to upload backups to cloud storage (e.g., AWS S3, Google Cloud Storage) for secure retention and restore capabilities.
 
-## Architecture Diagram
+## Architecture Diagrams
+
+### Web Application Architecture
 
 ```mermaid
 graph LR
 subgraph Coolify Server
 subgraph Next.js Application
-A[Frontend  Next.js]
+A[Frontend Next.js]
 subgraph Backend
 B[Next.js Actions]
-C[Next.js API Routes for webhooks and shared apis]
+C[Next.js API Routes]
 end
 end
-D[Self-hosted Supabase]
+D[Supabase Services<br/>- Auth<br/>- Realtime<br/>- PostgreSQL DB<br/>- Storage]
 A --> B & C
 B & C --> D
 end
 style A fill:#0b0,stroke:#333,stroke-width:2px
 style D fill:#fff,stroke:#333,stroke-width:2px
 ```
+
+### Mobile Extension Architecture (Suggested)
+
+```mermaid
+graph LR
+subgraph Coolify Server
+subgraph Next.js Backend
+C[Next.js API Routes]
+end
+D[Supabase Services<br/>- Auth<br/>- Realtime<br/>- PostgreSQL DB<br/>- Storage]
+end
+
+subgraph Mobile Devices
+E[Expo React Native App]
+end
+
+E --> C
+E --> D
+style E fill:#4630eb,stroke:#333,stroke-width:2px
+```
+
+**Important Notes:**
+
+1. The current codebase focuses on web implementation only
+2. For mobile development, we suggest:
+   - Using Expo (React Native) for cross-platform development
+   - Sharing validation logic (Zod schemas) between web and mobile
+   - Reusing Next.js API routes where possible
+   - Direct mobile->Supabase integration for Auth/Realtime
+   - Creating a shared types package for TS types
+3. Supabase services remain the single source of truth for:
+   - User authentication
+   - Real-time updates
+   - Database operations
+   - File storage
 
 ## Development Workflow
 
