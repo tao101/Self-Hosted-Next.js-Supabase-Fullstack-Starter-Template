@@ -39,9 +39,7 @@ test.describe.serial('User Role Access Control', () => {
     await page.goto('/auth/get-started');
     await page.getByLabel('Email').fill(USER_EMAIL);
     await page.getByRole('button', { name: /Send OTP & Magic Link/i }).click();
-    await page.waitForSelector(':text("Enter the 6-digit OTP")', {
-      timeout: 5000,
-    });
+    //await page.waitForSelector(':text-matches("6-digit", "i")');
 
     // Wait for OTP verification form
     await expect(page.getByText(/Enter the 6-digit OTP/i)).toBeVisible();
@@ -76,9 +74,7 @@ test.describe.serial('User Role Access Control', () => {
     await page.goto('/auth/get-started');
     await page.getByLabel('Email').fill(ADMIN_EMAIL);
     await page.getByRole('button', { name: /Send OTP & Magic Link/i }).click();
-    await page.waitForSelector(':text("Enter the 6-digit OTP")', {
-      timeout: 5000,
-    });
+    //await page.waitForSelector(':text-matches("6-digit", "i")');
 
     // Wait for OTP verification form
     await expect(page.getByText(/Enter the 6-digit OTP/i)).toBeVisible();
