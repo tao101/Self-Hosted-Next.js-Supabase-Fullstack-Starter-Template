@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test';
 
+/**
+ * This test spec serves as a basic sanity check to ensure Playwright is working correctly.
+ * It tests simple navigation and assertions on the Playwright documentation site.
+ */
+
 test('has title', async ({ page }) => {
   await page.goto('https://playwright.dev/');
 

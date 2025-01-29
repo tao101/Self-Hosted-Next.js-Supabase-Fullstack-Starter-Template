@@ -69,6 +69,7 @@ For more detailed setup instructions, please see the [Project Setup](documentati
 ## Development Workflow
 
 - **Branching**: Always create feature branches from the `staging` branch.
+- **Local Testing**: Before creating a PR, run tests locally using `npm run test` to ensure all tests pass.
 - **Pull Requests (PRs)**: Create PRs to merge feature branches into `staging`. Ensure all tests pass and code reviews are completed before merging.
 - **Staging & Production**: The `staging` and `production` branches are automatically deployed to their respective environments via Coolify.
 
