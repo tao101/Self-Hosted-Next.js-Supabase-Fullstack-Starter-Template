@@ -173,6 +173,10 @@ test.describe.serial('Account Management', () => {
       .fill('delete my account');
     await page.getByRole('button', { name: 'Delete Account' }).click();
 
+    await sleep(5000);
+
+    await page.goto('/dashboard/account');
+
     // Verify deletion and redirect
     await expect(page).toHaveURL(/auth\/get-started/);
 
