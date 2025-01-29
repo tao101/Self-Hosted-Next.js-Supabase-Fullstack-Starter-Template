@@ -9,7 +9,8 @@ function verifyEnvVars() {
     "NEXT_PUBLIC_SUPABASE_TEST_URL",
     "NEXT_PUBLIC_SUPABASE_TEST_ANON_KEY",
     "SUPABASE_SERVICE_ROLE_KEY_TEST",
-    "SUPABASE_TEST_DB_URL"
+    "SUPABASE_TEST_DB_URL",
+    "SUPABASE_DB_URL",
   ];
 
   const missingVars = requiredVars.filter((varName) => !process.env[varName]);
