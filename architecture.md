@@ -158,3 +158,43 @@ use coolify rollback
 ## Testing Strategy
 
 - **E2E Tests:** Playwright tests for end-to-end testing of the application.
+- **CI/CD Workflows:**
+  - `playwright.yml`: Runs automated browser tests on every push/PR
+  - `supabase-backup.yml`: Scheduled production database backups
+- **Key Testing Features:**
+  - Test database reset before each run
+  - Mobile testing configurations
+  - Parallel test execution
+  - HTML report generation
+  - Automatic PR comments with test results
+
+### CI Workflow Configuration
+
+Required GitHub Secrets for testing:
+
+```env
+SUPABASE_TEST_DB_URL
+SUPABASE_SERVICE_ROLE_KEY_TEST
+NEXT_PUBLIC_SUPABASE_TEST_URL
+NEXT_PUBLIC_SUPABASE_TEST_ANON_KEY
+```
+
+Test suites follow a strict structure:
+
+1. Database cleanup in afterAll hooks
+2. Mobile viewport testing
+3. Form validation coverage
+4. Role-based access control verification
+5. Full authentication flow testing
+
+Production backups run every 3 days via:
+
+```yaml
+.github/workflows/supabase-backup.yml
+```
+
+E2E tests follow patterns from:
+
+```yaml
+.github/workflows/playwright.yml
+```

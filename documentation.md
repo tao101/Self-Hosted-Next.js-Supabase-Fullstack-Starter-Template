@@ -119,6 +119,36 @@ style J fill:#fff,stroke:#333,stroke-width:2px
   ```
 - **Writing Tests:** Write unit tests for your components, utility functions, and backend logic to ensure code quality and prevent regressions. _(Guidance on writing effective tests can be added here in more detail later)_
 
+## End-to-End Testing
+
+We use Playwright for comprehensive end-to-end testing. Key test suites include:
+
+1. **Authentication Flow** (`tests/e2e/auth.spec.ts`):
+
+   - User registration with OTP
+   - Login flow validation
+   - Form validation and error handling
+   - Email normalization tests
+
+2. **Account Management** (`tests/e2e/account.spec.ts`):
+
+   - Profile updates
+   - Marketing preferences
+   - Avatar uploads
+   - Account deletion flow
+
+3. **Role-Based Access Control** (`tests/e2e/userRole.spec.ts`):
+   - Admin vs regular user access
+   - Dashboard permission checks
+   - Automatic redirects for unauthorized users
+
+Tests run automatically on every pull request and push via the Playwright CI workflow (`.github/workflows/playwright.yml`). Key features:
+
+- Test database reset before each run
+- HTML report artifact upload
+- Automatic PR comments with test results
+- Parallel test execution
+
 ## Coolify Deployment Setup (High-Level)
 
 _(This section can be expanded with more Coolify-specific details as needed)_
@@ -264,3 +294,23 @@ To access the API documentation:
 
 1. Run the application locally with `npm run dev`
 2. Visit `http://localhost:3000/api-docs`
+
+## GitHub Actions Secrets
+
+The following secrets must be configured in your GitHub repository (Settings > Secrets > Actions):
+
+| Secret Name                          | Description                                                        |
+| ------------------------------------ | ------------------------------------------------------------------ |
+| `SUPABASE_PRODUCTION_DB_URL`         | Connection URL for production Supabase database (used for backups) |
+| `SUPABASE_TEST_DB_URL`               | Connection URL for test database (used in CI/CD)                   |
+| `SUPABASE_SERVICE_ROLE_KEY_TEST`     | Service role key for test environment                              |
+| `NEXT_PUBLIC_SUPABASE_TEST_URL`      | Public Supabase URL for test environment                           |
+| `NEXT_PUBLIC_SUPABASE_TEST_ANON_KEY` | Anonymous key for test environment                                 |
+| `SENTRY_AUTH_TOKEN`                  | Authentication token for Sentry error tracking                     |
+
+## CI Workflows
+
+- `playwright.yml`: Runs E2E tests on PRs/pushes
+- `supabase-backup.yml`: Automated production DB backups (every 3 days)
+
+See [documentation.md](documentation.md#github-actions-secrets) for required GitHub secrets setup.
