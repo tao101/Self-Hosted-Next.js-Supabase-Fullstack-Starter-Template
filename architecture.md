@@ -63,7 +63,7 @@ style D fill:#fff,stroke:#333,stroke-width:2px
 ```mermaid
 graph LR
 subgraph Coolify Server
-subgraph Next.js Backend
+subgraph Next.js
 C[Next.js API Routes]
 end
 D[Supabase Services<br/>- Auth<br/>- Realtime<br/>- PostgreSQL DB<br/>- Storage]
@@ -75,7 +75,7 @@ end
 
 E --> C
 E --> D
-style E fill:#4630eb,stroke:#333,stroke-width:2px
+style E fill:#0b0,stroke:#333,stroke-width:2px
 ```
 
 **Important Notes:**
@@ -110,9 +110,10 @@ style E fill:#4630eb,stroke:#333,stroke-width:2px
 3.  **Pull Requests (PRs) and Merging:**
 
     - Once a feature is complete and tested locally, developers create a Pull Request (PR) to merge their feature branch into the `staging` branch.
+    - **E2E Tests:** PRs must pass all E2E Playwright tests and must include tests for the new feature or bug fix.
     - **Code Review:** PRs undergo code review by other developers to ensure code quality and catch potential issues.
-    - **Automated Testing:** Upon PR creation, automated tests (unit tests, integration tests - if implemented) are run.
-    - **Supabase Migrations:** If the feature includes database schema changes, a Supabase migration script is included in the PR.
+    - **Automated Testing:** Upon PR creation, automated E2E Playwright tests are run.
+    - **Supabase Migrations:** If the feature includes database schema changes, a Supabase migration script should be created and included in the PR.
 
 4.  **Staging Deployment:**
 
