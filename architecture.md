@@ -75,6 +75,7 @@ end
 
 E --> C
 E --> D
+C --> D
 style E fill:#0b0,stroke:#333,stroke-width:2px
 ```
 
