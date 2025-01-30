@@ -4,57 +4,64 @@ A production-ready template for building modern web applications with Next.js an
 
 ```mermaid
 graph TD
-subgraph Coolify_Infrastructure["Coolify/Your Infrastructure"]
-direction TB
-subgraph NextJS_App["Next.js Application"]
-direction LR
-Frontend["Frontend (App Router)
+    subgraph Coolify_Infrastructure["Coolify/Your Infrastructure"]
+        direction TB
+        subgraph NextJS_App["Next.js Application"]
+            direction LR
+            Frontend["Frontend (App Router)
+            - React 19
+            - TypeScript
+            - Shadcn UI
+            - Legend State
+            - SSR/SSG"]
 
-- React 19
-- TypeScript
-- Shadcn UI
-- Legend State
-- SSR/SSG"] --> Backend["Backend
-- API Routes
-- Server Actions
-- Zod Validation
-- Auth Middleware"]
-  end
+            Backend["Backend
+            - API Routes
+            - Server Actions
+            - Zod Validation
+            - Auth Middleware"]
 
-          subgraph Supabase_Services["Self-Hosted Supabase"]
-              direction TB
-              Auth["Authentication
-              - Email/Password
-              - OAuth
-              - Session Mgmt"] --> PostgreSQL[(("PostgreSQL DB
-              - RLS Policies
-              - Migrations
-              - Realtime"))]
-              Storage["Storage
-              - S3-compatible
-              - RLS Protected"] --> PostgreSQL
-              Realtime["Realtime
-              - WebSockets
-              - Channel Subs"] --> PostgreSQL
-          end
-      end
+            Frontend --> Backend
+        end
 
-      Frontend -->|SSR/SSG| Backend
-      Backend -->|"API Requests"| Supabase_Services
-      Backend -->|"Server Actions"| Supabase_Services
-      Realtime -->|"Live Updates"| Frontend
+        subgraph Supabase_Services["Self-Hosted Supabase"]
+            direction TB
+            Auth["Authentication
+            - Email/Password
+            - OAuth
+            - Session Mgmt"]
+            Storage["Storage
+            - S3-compatible
+            - RLS Protected"]
+            Realtime["Realtime
+            - WebSockets
+            - Channel Subs"]
+            PostgreSQL[("PostgreSQL DB
+            - RLS Policies
+            - Migrations
+            - Realtime")]
 
-      style NextJS_App fill:#0b0,stroke:#333,stroke-width:2px,color:white
-      style Supabase_Services fill:#06f,stroke:#333,stroke-width:2px,color:white
-      style PostgreSQL fill:#fff,stroke:#333,stroke-width:2px
+            Auth --> PostgreSQL
+            Storage --> PostgreSQL
+            Realtime --> PostgreSQL
+        end
+    end
 
-      classDef green fill:#0b0,stroke:#333,color:white;
-      classDef blue fill:#06f,stroke:#333,color:white;
-      classDef white fill:#fff,stroke:#333;
+    Backend -->|API Requests| Auth
+    Backend -->|Server Actions| Storage
+    Realtime -->|Live Updates| Frontend
 
-      class NextJS_App green
-      class Supabase_Services blue
-      class PostgreSQL white
+    style NextJS_App fill:#0b0,stroke:#333,stroke-width:2px,color:white
+    style Supabase_Services fill:#06f,stroke:#333,stroke-width:2px,color:white
+    style PostgreSQL fill:#fff,stroke:#333,stroke-width:2px
+
+    classDef green fill:#0b0,stroke:#333,color:white;
+    classDef blue fill:#06f,stroke:#333,color:white;
+    classDef white fill:#fff,stroke:#333;
+
+    class NextJS_App green
+    class Supabase_Services blue
+    class PostgreSQL white
 ```
 
 ## Key Features:
