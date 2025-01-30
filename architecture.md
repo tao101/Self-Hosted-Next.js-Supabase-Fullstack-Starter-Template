@@ -96,6 +96,21 @@ style E fill:#0b0,stroke:#333,stroke-width:2px
 
 ## Development Workflow
 
+```mermaid
+graph TD
+    A[Local Development] --> B[Create Feature Branch]
+    B --> C[Develop, Write Tests & Run all Tests Locally]
+    C --> D[Create PR to Staging]
+    D --> E{Run E2E Tests}
+    E -->|Pass| F[Merge to Staging]
+    E -->|Fail| C
+    F --> G[Auto-deploy to Staging]
+    G --> H[Verify Staging]
+    H --> I{Merge to Production?}
+    I -->|Yes| J[Merge to Main]
+    J --> K[Auto-deploy to Production]
+```
+
 1.  **Local Development:**
 
     - Each developer sets up a local Supabase instance using the Supabase CLI. This ensures an isolated and consistent development environment.
@@ -128,6 +143,21 @@ style E fill:#0b0,stroke:#333,stroke-width:2px
     - **Migration Execution on Production:** Similar to staging, Supabase migrations are automatically applied to the production Supabase instance as part of the production deployment process. _(See "Supabase Migrations in Coolify Deployments" below)_
 
 ## Supabase Migrations in Coolify Deployments
+
+```mermaid
+sequenceDiagram
+    participant C as Coolify
+    participant S as Supabase CLI
+    participant D as Database
+    C->>+S: Run pre-deploy.sh
+    S->>+D: Check connection (SUPABASE_DB_URL)
+    D-->>-S: Connection OK
+    S->>+D: Apply migrations (db push)
+    D-->>-S: Migration results
+    S->>+C: Exit code 0 (success) or 1 (fail)
+    C->>C: Abort deployment if migration fails
+    C->>C: Start application deployment only after successful migration
+```
 
 To ensure safe and reliable database migrations during Coolify deployments, use this pre deploy script on your Coolify deployment for the nextjs application:
 
@@ -181,6 +211,24 @@ By focusing on these aspects, the SaaS template aims to provide a solid foundati
 use coolify rollback
 
 ## Testing Strategy
+
+```mermaid
+graph LR
+    A[Playwright Tests] --> B[E2E Browser Tests]
+    A --> C[Mobile Viewport Tests]
+    A --> D[Role-based Access Tests]
+    B --> E[HTML Report]
+    C --> E
+    D --> E
+    E --> F[GitHub Artifacts]
+    F --> G[PR Comments]
+
+    H[Supabase Backup] --> I[Scheduled Every 3 Days]
+    I --> J[Cloud Storage]
+
+    style A fill:#4CAF50,stroke:#333
+    style H fill:#FF9800,stroke:#333
+```
 
 - **E2E Tests:** Playwright tests for end-to-end testing of the application.
 - **CI/CD Workflows:**
