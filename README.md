@@ -2,6 +2,7 @@
 
 A production-ready template for building modern web applications with Next.js and self-hosted Supabase. Designed for developers who want full control over their stack while maintaining rapid development capabilities. Optimized for deployment on Coolify.
 
+```mermaid
 graph TD
 subgraph Coolify_Infrastructure["Coolify/Your Infrastructure"]
 direction TB
@@ -54,6 +55,7 @@ Frontend["Frontend (App Router)
       class NextJS_App green
       class Supabase_Services blue
       class PostgreSQL white
+```
 
 ## Key Features:
 
