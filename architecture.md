@@ -101,7 +101,7 @@ graph TD
     A[Create Feature Branch] --> B[Local Development]
     B --> C[Develop, Write Tests & Run all Tests Locally]
     C --> D[Create PR to Staging]
-    D --> E{Run E2E Tests}
+    D --> E{Run Automated Tests}
     E -->|Pass| F[Merge to Staging]
     E -->|Fail| C
     F --> G[Auto-deploy to Staging]
