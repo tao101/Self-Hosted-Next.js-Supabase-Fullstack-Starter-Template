@@ -2,6 +2,8 @@
 
 A production-ready template for building modern web applications with Next.js and self-hosted Supabase. Designed for developers who want full control over their stack while maintaining rapid development capabilities. Optimized for deployment on Coolify.
 
+![Architecture Diagram](https://via.placeholder.com/800x400.png?text=Architecture+Diagram)
+
 Key Features:
 
 - 🚀 Full-stack architecture with colocated frontend/backend
@@ -27,90 +29,114 @@ Here are the core technologies used in this project:
 - 📊 **Monitoring**: [Sentry](https://sentry.io/) error tracking
 - 🔄 **Realtime**: Built-in Supabase realtime functionality
 
-Key Features:
-
-- Full-stack architecture with colocated frontend/backend
-- Self-hosted Supabase instance with automated migrations
-- Enterprise-grade security patterns
-- Comprehensive testing suite
-- Real-time capabilities out-of-the-box
-- Developer-friendly DX with TypeScript & Zod
-
-For complete architecture details, see the [Architecture Documentation](architecture.md).
-
 ## Getting Started
 
 Follow these steps to get your local development environment set up:
 
-1.  **Prerequisites**: Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed. You'll also need the [Supabase CLI](https://supabase.com/docs/reference/cli/install) and [Docker Desktop](https://www.docker.com/products/docker-desktop/). Refer to the [Developer Documentation](documentation.md) for detailed instructions.
+1. **Prerequisites**:
 
-2.  **Clone the repository**:
+   - Node.js 18+ and npm
+   - Supabase CLI (`npm install -g supabase`)
+   - Docker Desktop (for local Supabase)
+   - Coolify account (optional for deployment)
 
-    ```bash
-    git clone <repository_url>
-    cd <repository_name>
-    ```
+2. **Clone the repository**:
 
-3.  **Install dependencies**:
+   ```bash
+   git clone <repository_url>
+   cd <repository_name>
+   ```
 
-    ```bash
-    npm install
-    ```
+3. **Install dependencies**:
 
-4.  **Start local Supabase**:
+   ```bash
+   npm install
+   ```
 
-    ```bash
-    supabase start
-    ```
+4. **Start local Supabase**:
 
-    This will start the Supabase stack in Docker.
+   ```bash
+   supabase start
+   ```
 
-5.  **Apply database migrations**:
+5. **Apply database migrations**:
 
-    ```bash
-    supabase db migrate up
-    ```
+   ```bash
+   supabase db migrate up
+   ```
 
-6.  **Generate Supabase Typescript types**:
+6. **Generate TypeScript types**:
 
-    ```bash
-    npm run supabase:genTypes
-    ```
+   ```bash
+   npm run supabase:genTypes
+   ```
 
-7.  **Start the Next.js development server**:
-    ```bash
-    npm run dev
-    ```
-    Your application should now be running at `http://localhost:3000`.
+7. **Start development server**:
+   ```bash
+   npm run dev
+   ```
 
-For more detailed setup instructions, please see the [Project Setup](documentation.md#project-setup) section in the `documentation.md` file.
+Your application will be running at `http://localhost:3000`.
 
 ## Development Workflow
 
-- **Branching**: Always create feature branches from the `staging` branch.
-- **Local Testing**: Before creating a PR, run tests locally using `npm run test` to ensure all tests pass.
-- **Pull Requests (PRs)**: Create PRs to merge feature branches into `staging`. Ensure all tests pass and code reviews are completed before merging.
-- **Staging & Production**: The `staging` and `production` branches are automatically deployed to their respective environments via Coolify.
+1. **Branching Strategy**:
 
-For a detailed development workflow, including branching and pull request guidelines, refer to the [Development Workflow Diagram](documentation.md#development-workflow-diagram) and [Branching and Pull Requests](documentation.md#branching-and-pull-requests) sections in `documentation.md`.
+   - Create feature branches from `staging`
+   - PRs must include:
+     - Playwright tests for new features
+     - Supabase migrations if schema changes
+     - Updated documentation
+
+2. **Testing**:
+
+   ```bash
+   # Run all tests
+   npm run test
+
+   # Run specific test suite
+   npm run test tests/e2e/auth.spec.ts
+   ```
+
+3. **Production Deployment**:
+
+   ```bash
+   # Build production bundle
+   npm run build
+
+   # Start production server
+   npm run start
+   ```
 
 ## Useful Scripts
 
-Here are some helpful scripts from `package.json` for development:
-
-- `npm run dev`: Starts the Next.js development server.
-- `npm run build`: Builds the Next.js application for production.
-- `npm run start`: Starts the Next.js production server.
-- `npm run lint`: Runs ESLint for code linting.
-- `npm run test`: Runs Playwright tests.
-- `npm run supabase:genTypes`: Generates TypeScript types from your Supabase database schema.
-- `npm run supabase:migrate`: Applies pending Supabase database migrations locally.
-- `npm run ci:check`: Runs linting, tests, and generates Supabase types for CI checks.
-
-See the [Package.json Scripts](documentation.md#packagejson-scripts) section in `documentation.md` for more details on available scripts.
+```json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "supabase db push && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "playwright test",
+    "supabase:genTypes": "supabase gen types --lang typescript --local > types/supabaseTypes.ts",
+    "supabase:reset": "supabase stop && supabase delete && supabase start"
+  }
+}
+```
 
 ## Documentation
 
-For comprehensive documentation, including detailed setup instructions, deployment information, and coding conventions, please refer to [documentation.md](documentation.md).
+- [Architecture Overview](architecture.md) - System design and component relationships
+- [Developer Guide](documentation.md) - Detailed setup and configuration instructions
+- [Testing Strategy](documentation.md#testing-strategy) - E2E and unit testing guidelines
+- [API Documentation](/api-docs) - Auto-generated Swagger docs (available in development)
 
-Happy coding!
+## License
+
+MIT License - See [LICENSE](LICENSE) for details
+
+---
+
+**Contribution Guidelines**: We welcome contributions! Please read our [Contribution Guide](CONTRIBUTING.md) before submitting PRs.
+
+[![Deploy on Coolify](https://coolify.io/images/button.svg)](https://coolify.io)

@@ -2,7 +2,10 @@
 
 ### Tech Stack Foundation
 
+this is a Self-Hosted Next.js & Supabase Fullstack Starter Template
 This project uses a Next.js 15+ full-stack architecture with:
+
+A production-ready template for building modern web applications with Next.js and self-hosted Supabase. Designed for developers who want full control over their stack while maintaining rapid development capabilities. Optimized for deployment on Coolify.
 
 - React 19+ for UI components (reference: components/ui/)
 - TypeScript 5+ for type safety (tsconfig.json:1-30)
