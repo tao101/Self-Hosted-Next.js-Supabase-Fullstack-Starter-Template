@@ -70,7 +70,7 @@ D[Supabase Services<br/>- Auth<br/>- Realtime<br/>- PostgreSQL DB<br/>- Storage]
 end
 
 subgraph Mobile
-E[Expo React Native App (suggested)]
+E[Expo React Native App]
 end
 
 E --> C
