@@ -2,9 +2,60 @@
 
 A production-ready template for building modern web applications with Next.js and self-hosted Supabase. Designed for developers who want full control over their stack while maintaining rapid development capabilities. Optimized for deployment on Coolify.
 
-![Architecture Diagram](https://via.placeholder.com/800x400.png?text=Architecture+Diagram)
+graph TD
+subgraph Coolify_Infrastructure["Coolify/Your Infrastructure"]
+direction TB
+subgraph NextJS_App["Next.js Application"]
+direction LR
+Frontend["Frontend (App Router)
 
-Key Features:
+- React 19
+- TypeScript
+- Shadcn UI
+- Legend State
+- SSR/SSG"] --> Backend["Backend
+- API Routes
+- Server Actions
+- Zod Validation
+- Auth Middleware"]
+  end
+
+          subgraph Supabase_Services["Self-Hosted Supabase"]
+              direction TB
+              Auth["Authentication
+              - Email/Password
+              - OAuth
+              - Session Mgmt"] --> PostgreSQL[(("PostgreSQL DB
+              - RLS Policies
+              - Migrations
+              - Realtime"))]
+              Storage["Storage
+              - S3-compatible
+              - RLS Protected"] --> PostgreSQL
+              Realtime["Realtime
+              - WebSockets
+              - Channel Subs"] --> PostgreSQL
+          end
+      end
+
+      Frontend -->|SSR/SSG| Backend
+      Backend -->|"API Requests"| Supabase_Services
+      Backend -->|"Server Actions"| Supabase_Services
+      Realtime -->|"Live Updates"| Frontend
+
+      style NextJS_App fill:#0b0,stroke:#333,stroke-width:2px,color:white
+      style Supabase_Services fill:#06f,stroke:#333,stroke-width:2px,color:white
+      style PostgreSQL fill:#fff,stroke:#333,stroke-width:2px
+
+      classDef green fill:#0b0,stroke:#333,color:white;
+      classDef blue fill:#06f,stroke:#333,color:white;
+      classDef white fill:#fff,stroke:#333;
+
+      class NextJS_App green
+      class Supabase_Services blue
+      class PostgreSQL white
+
+## Key Features:
 
 - 🚀 Full-stack architecture with colocated frontend/backend
 - 🔐 Self-hosted Supabase instance with automated migrations
@@ -138,5 +189,3 @@ MIT License - See [LICENSE](LICENSE) for details
 ---
 
 **Contribution Guidelines**: We welcome contributions! Please read our [Contribution Guide](CONTRIBUTING.md) before submitting PRs.
-
-[![Deploy on Coolify](https://coolify.io/images/button.svg)](https://coolify.io)
