@@ -98,7 +98,7 @@ style E fill:#0b0,stroke:#333,stroke-width:2px
 
 ```mermaid
 graph TD
-    A[Local Development] --> B[Create Feature Branch]
+    A[Create Feature Branch] --> B[Local Development]
     B --> C[Develop, Write Tests & Run all Tests Locally]
     C --> D[Create PR to Staging]
     D --> E{Run E2E Tests}
