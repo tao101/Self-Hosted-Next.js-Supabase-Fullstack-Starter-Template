@@ -58,7 +58,7 @@ style A fill:#0b0,stroke:#333,stroke-width:2px
 style D fill:#fff,stroke:#333,stroke-width:2px
 ```
 
-### Mobile Extension Architecture (Suggested)
+### Architecture with Mobile App
 
 ```mermaid
 graph LR
@@ -69,7 +69,6 @@ end
 D[Supabase Services<br/>- Auth<br/>- Realtime<br/>- PostgreSQL DB<br/>- Storage]
 end
 
-subgraph Mobile Devices
 E[Expo React Native App]
 end
 
@@ -138,6 +137,7 @@ To ensure safe and reliable database migrations during Coolify deployments, use 
 
 - Set as **Pre-deploy script** in Coolify UI for your nextjs application
 - Required Environment Variables:
+
 ```env
 SUPABASE_DB_URL
 ```
