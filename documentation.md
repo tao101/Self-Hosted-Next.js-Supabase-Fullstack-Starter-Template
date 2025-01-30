@@ -1,14 +1,14 @@
 # Developer Documentation
 
-This document provides a guide for developers on how to set up, develop, and contribute to the SaaS template project.
+This document provides a guide for developers on how to set up, develop, and contribute to the Next.js + Supabase starter template.
 
 ## Project Setup
 
 1.  **Prerequisites:**
 
-    - **Node.js and npm:** Ensure you have Node.js and npm (Node Package Manager) installed on your system. You can download them from [nodejs.org](https://nodejs.org/).
+    - **Node.js and npm:** Ensure you have Node.js and npm (Node Package Manager) installed on your system. You can download them from [nodejs.org](https://nodejs.org/) or with [nvm](https://github.com/nvm-sh/nvm).
     - **Supabase CLI:** Install the Supabase CLI globally. Follow the installation instructions for your operating system in the [Supabase CLI documentation](https://supabase.com/docs/reference/cli/install).
-    - **Coolify Account (for deployment):** If you plan to deploy to Coolify, you'll need a Coolify account and a project set up.
+    - **Coolify (for deployment):** If you plan to deploy to Coolify, you'll need a Coolify account and a project set up. [Learn more about Coolify here](https://coolify.io/).
 
 2.  **Clone the Repository:**
 
@@ -56,10 +56,55 @@ This document provides a guide for developers on how to set up, develop, and con
       ```
 
 7.  **Start the Next.js Development Server:**
+
     ```bash
     npm run dev
     ```
+
     Your Next.js application should now be running at `http://localhost:3000`.
+
+    ## Architecture Overview
+
+```mermaid
+graph LR
+subgraph Infrastructure
+  A[Next.js Frontend] --> B[Next.js Backend ]
+  B --> C[API Routes]
+  B --> D[Server Actions]
+  C & D --> E[(Supabase Services)]
+  E -->|Realtime| A
+end
+
+subgraph Supabase_Services [Supabase]
+  direction TB
+  E1[Authentication]
+  E2[PostgreSQL DB]
+  E3[Storage]
+  E4[Realtime]
+end
+
+style A fill:#0b0,stroke:#333,stroke-width:2px
+style B fill:#0b0,stroke:#333,stroke-width:2px
+style E fill:#06f,stroke:#333,stroke-width:2px
+style Supabase_Services fill:#fff,stroke:#333,stroke-width:1px
+
+A -->|SSR/SSG| B
+E -->|RLS Policies| E2
+E1 <--> E2
+E3 <--> E2
+E4 <--> E2
+```
+
+**Key Architectural Decisions:**
+
+1. Full-stack colocation for rapid iteration
+2. Supabase as single source of truth for:
+   - Authentication
+   - Real-time updates
+   - Database operations
+   - File storage
+3. TypeScript-first development
+4. Security-by-default with RLS and role checks
 
 ## Development Workflow Diagram
 
@@ -194,7 +239,7 @@ The `package.json` file includes several scripts to streamline common developmen
   - Excellent TypeScript support
   - Example usage from sidebar component:
 
-By following these guidelines, developers can effectively contribute to the SaaS template project and maintain a high level of code quality and development velocity.
+By following these guidelines, developers can effectively contribute to the project and maintain a high level of code quality and development velocity.
 
 ## Monitoring and Error Tracking
 

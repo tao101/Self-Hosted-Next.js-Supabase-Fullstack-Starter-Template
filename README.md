@@ -1,23 +1,42 @@
-# Welcome to the SaaS Template Project!
+# Self-Hosted Next.js & Supabase Fullstack Starter Template
 
-This template is designed to kickstart your SaaS application development with a focus on developer experience and a rapid development cycle. It's built using Next.js and self-hosted Supabase, and is designed for easy deployment on Coolify.
+A production-ready template for building modern web applications with Next.js and self-hosted Supabase. Designed for developers who want full control over their stack while maintaining rapid development capabilities. Optimized for deployment on Coolify.
+
+Key Features:
+
+- 🚀 Full-stack architecture with colocated frontend/backend
+- 🔐 Self-hosted Supabase instance with automated migrations
+- 🛡️ Enterprise-grade security patterns baked in
+- 📊 Built-in observability with Sentry monitoring
+- 📚 Auto-generated API documentation via Swagger
+- ⚡ Lightning-fast development workflow with Legend State
+- 🧪 Comprehensive testing suite (Playwright + Jest)
+- 🔄 Real-time capabilities out-of-the-box
 
 ## Tech Stack
 
 Here are the core technologies used in this project:
 
-- **Frontend & Backend**: [Next.js](https://nextjs.org/) (React framework)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with [Shadcn UI](https://ui.shadcn.com/) component library
-- **State Management**: [Legend State](https://legendapp.com/)
-- **Database & Backend Services**: [Supabase](https://supabase.com/) (PostgreSQL, Authentication, Storage, Realtime)
-- **API Documentation**: [Swagger](https://swagger.io/)
-- **Testing**: [Jest](https://jestjs.io/) and [Playwright](https://playwright.dev/)
-- **Deployment**: [Coolify](https://coolify.io/)
-- **Error Tracking & Monitoring**: [Sentry](https://sentry.io/)
-- **Typescript**: [Typescript](https://www.typescriptlang.org/)
-- **Schema Validation**: [Zod](https://zod.dev/)
+- 🚀 **Full-Stack Framework**: [Next.js](https://nextjs.org/) (App Router + API Routes)
+- 🎨 **UI Components**: [Shadcn UI](https://ui.shadcn.com/) + [Tailwind CSS](https://tailwindcss.com/)
+- 🗄️ **Database & Backend**: Self-hosted [Supabase](https://supabase.com/) (PostgreSQL, Auth, Storage)
+- ⚡ **State Management**: [Legend State](https://legendapp.com/) for reactive state
+- 📜 **API Docs**: Automated Swagger/OpenAPI documentation
+- 🧪 **Testing**: [Playwright](https://playwright.dev/) E2E + [Jest](https://jestjs.io/) unit tests
+- 🛡️ **Security**: Role-based access control & database RLS
+- 📊 **Monitoring**: [Sentry](https://sentry.io/) error tracking
+- 🔄 **Realtime**: Built-in Supabase realtime functionality
 
-For a complete list, see the [Architecture Documentation](architecture.md).
+Key Features:
+
+- Full-stack architecture with colocated frontend/backend
+- Self-hosted Supabase instance with automated migrations
+- Enterprise-grade security patterns
+- Comprehensive testing suite
+- Real-time capabilities out-of-the-box
+- Developer-friendly DX with TypeScript & Zod
+
+For complete architecture details, see the [Architecture Documentation](architecture.md).
 
 ## Getting Started
 
