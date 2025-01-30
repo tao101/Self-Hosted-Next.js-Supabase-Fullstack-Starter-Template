@@ -105,7 +105,7 @@ style E fill:#0b0,stroke:#333,stroke-width:2px
 2.  **Branching Strategy:**
 
     - **`staging` branch:** Represents the staging environment. Feature branches are created from and merged into this branch.
-    - **`production` branch:** Represents the production environment. Staging branch is merged into production after thorough testing and approval.
+    - **`production` (main) branch:** Represents the production environment. Staging branch is merged into production after thorough testing and approval.
     - **Feature branches:** Developers create feature branches from `staging` for each new feature, task, or bug fix. Branch names should be descriptive (e.g., `feature/user-profiles`, `fix/login-bug`).
 
 3.  **Pull Requests (PRs) and Merging:**
@@ -123,8 +123,8 @@ style E fill:#0b0,stroke:#333,stroke-width:2px
     - **Migration Execution on Staging:** As part of the staging deployment process (ideally _before_ the new application version is live), Supabase migrations are automatically applied to the staging Supabase instance. _(See "Supabase Migrations in Coolify Deployments" below)_
 
 5.  **Production Deployment:**
-    - After successful testing and validation in the staging environment, the `staging` branch is merged into the `production` branch.
-    - **Automated Deployment to Production on Coolify:** Coolify automatically deploys the `production` branch to the production environment upon merge.
+    - After successful testing and validation in the staging environment, the `staging` branch is merged into the `production` (main) branch.
+    - **Automated Deployment to Production on Coolify:** Coolify automatically deploys the `production` (main) branch to the production environment upon merge.
     - **Migration Execution on Production:** Similar to staging, Supabase migrations are automatically applied to the production Supabase instance as part of the production deployment process. _(See "Supabase Migrations in Coolify Deployments" below)_
 
 ## Supabase Migrations in Coolify Deployments
