@@ -50,7 +50,7 @@ B[Next.js Actions]
 C[Next.js API Routes]
 end
 end
-D[Supabase Services<br/>- Auth<br/>- Realtime<br/>- PostgreSQL DB<br/>- Storage]
+D[Supabase <br/>- Auth<br/>- Realtime<br/>- PostgreSQL DB<br/>- Storage]
 A --> B & C
 B & C --> D
 end
@@ -66,7 +66,7 @@ subgraph Coolify Server
 subgraph Next.js
 C[Next.js API Routes]
 end
-D[Supabase Services<br/>- Auth<br/>- Realtime<br/>- PostgreSQL DB<br/>- Storage]
+D[Supabase <br/>- Auth<br/>- Realtime<br/>- PostgreSQL DB<br/>- Storage]
 end
 
 subgraph Mobile
