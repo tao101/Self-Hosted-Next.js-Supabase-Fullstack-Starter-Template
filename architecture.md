@@ -128,34 +128,19 @@ style E fill:#0b0,stroke:#333,stroke-width:2px
 
 ## Supabase Migrations in Coolify Deployments
 
-To ensure database migrations are run before each deployment in Coolify _without modifying `coolify.yml`_, you can leverage Coolify's **deployment scripts**. Specifically, you would use a **Post-deploy script**.
+To ensure safe and reliable database migrations during Coolify deployments, use this pre deploy script on your Coolify deployment for the nextjs application:
 
-Here's the general approach:
+```bash
+./pre-deploy.sh
+```
 
-1.  **Create a Migration Script:** Create a script (e.g., `migrate.sh`) in your project root that uses the Supabase CLI to apply migrations. This script would typically look like this:
+**Coolify Configuration**:
 
-    ```bash
-    #!/bin/bash
-    supabase db migrate up
-    ```
-
-    Make sure this script is executable (`chmod +x migrate.sh`).
-
-2.  **Configure Coolify Post-deploy Script:** In your Coolify application settings, configure a **Post-deploy script**. Set the script path to `/app/migrate.sh` (assuming your project root in the Coolify container is `/app`).
-
-**How it works:**
-
-- During deployment, Coolify will first deploy the new application code.
-- _After_ the code deployment is complete, Coolify will execute the Post-deploy script (`migrate.sh`).
-- The `migrate.sh` script will use the Supabase CLI (which needs to be available in your Coolify deployment environment - see "Package.json Scripts" and "Coolify Environment Setup" in `documentation.md`) to apply any pending migrations to your Supabase database.
-- This ensures that the database schema is always up-to-date _before_ the newly deployed application starts serving traffic.
-
-**Important Considerations:**
-
-- **Supabase CLI in Coolify Environment:** Ensure the Supabase CLI is installed and available in your Coolify deployment environment. You might need to include installation steps in your Dockerfile or Coolify build process. _(This will be covered in `documentation.md`)_
-- **Environment Variables:** Your `migrate.sh` script will need access to the necessary Supabase environment variables (e.g., `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`) to connect to your Supabase database. Configure these in your Coolify environment variables settings.
-- **Idempotency:** Supabase migrations are designed to be idempotent. Running `supabase db migrate up` multiple times will only apply new migrations, so it's safe to run this script on each deployment.
-- **Error Handling:** Enhance the `migrate.sh` script with error handling to gracefully manage migration failures and potentially rollback deployments if necessary.
+- Set as **Pre-deploy script** in Coolify UI for your nextjs application
+- Required Environment Variables:
+```env
+SUPABASE_DB_URL
+```
 
 ## Technologies Used
 
