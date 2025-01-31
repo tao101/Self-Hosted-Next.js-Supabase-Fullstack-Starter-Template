@@ -75,13 +75,6 @@ graph TD
 - 🧪 Comprehensive testing suite (Playwright + Jest)
 - 🔄 Real-time capabilities out-of-the-box
 
-## Documentation
-
-- [Architecture Overview](architecture.md) - System design and component relationships
-- [Developer Guide](documentation.md) - Detailed setup and configuration instructions
-- [Deployment Guide](deployment.md) - Coolify deployment strategies for all environments
-- [Testing Strategy](documentation.md#testing-strategy) - E2E and unit testing guidelines
-
 ## Tech Stack
 
 Here are the core technologies used in this project:
@@ -96,13 +89,20 @@ Here are the core technologies used in this project:
 - 📊 **Monitoring**: [Sentry](https://sentry.io/) error tracking
 - 🔄 **Realtime**: Built-in Supabase realtime functionality
 
+## Documentation
+
+- [Architecture Overview](architecture.md) - System design and component relationships
+- [Developer Guide](documentation.md) - Detailed setup and configuration instructions
+- [Deployment Guide](deployment.md) - Coolify deployment strategies for all environments
+- [Testing Strategy](documentation.md#testing-strategy) - E2E and unit testing guidelines
+
 ## Getting Started
 
 Follow these steps to get your local development environment set up:
 
 1. **Prerequisites**:
 
-   - Node.js 18+ and npm
+   - Node.js 22+ and npm
    - Supabase CLI (`npm install -g supabase`)
    - Docker Desktop (for local Supabase)
    - Coolify account (optional for deployment)
@@ -177,19 +177,19 @@ Your application will be running at `http://localhost:3000`.
 
 ## Useful Scripts
 
-```json
-{
-  "scripts": {
-    "dev": "next dev",
-    "build": "supabase db push && next build",
-    "start": "next start",
-    "lint": "next lint",
-    "test": "playwright test",
-    "supabase:genTypes": "supabase gen types --lang typescript --local > types/supabaseTypes.ts",
-    "supabase:reset": "supabase stop && supabase delete && supabase start"
-  }
-}
-```
+| Script                      | Description                             |
+| --------------------------- | --------------------------------------- |
+| `npm run dev`               | Start development server                |
+| `npm run build`             | Build production bundle                 |
+| `npm run start`             | Start production server                 |
+| `npm run test`              | Run all Playwright tests                |
+| `npm run lint`              | Run ESLint checks                       |
+| `npm run format`            | Format code with Prettier               |
+| `npm run supabase:start`    | Start local Supabase instance           |
+| `npm run supabase:stop`     | Stop local Supabase instance            |
+| `npm run supabase:genTypes` | Generate TypeScript types from Supabase |
+
+See [package.json](package.json) for all available scripts.
 
 ## Documentation
 
