@@ -200,8 +200,8 @@ See [package.json](package.json) for all available scripts.
 
 ## License
 
-MIT License - See [LICENSE](LICENSE) for details
+MIT License
 
 ---
 
-**Contribution Guidelines**: We welcome contributions! Please read our [Contribution Guide](CONTRIBUTING.md) before submitting PRs.
+**Contribution Guidelines**: We welcome contributions!
