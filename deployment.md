@@ -31,22 +31,22 @@ sequenceDiagram
 
 ```mermaid
 graph TD
-    subgraph Coolify_Environments["Coolify Managed Services"]
+    subgraph Coolify_Environments["Coolify Project Services"]
         direction TB
 
-        subgraph Production["🟢 Production"]
+        subgraph Production["🟢 Production Environment"]
             direction LR
-            P_Nextjs[Next.js App<br/>Branch: main] --> P_Supabase[(Supabase DB<br/>Production)]
+            P_Nextjs[Next.js App<br/>Branch: main] --> P_Supabase[(Supabase DB<br/>)]
         end
 
-        subgraph Staging["🟡 Staging"]
+        subgraph Staging["🟡 Staging Environment"]
             direction LR
-            S_Nextjs[Next.js App<br/>Branch: staging] --> S_Supabase[(Supabase DB<br/>Staging)]
+            S_Nextjs[Next.js App<br/>Branch: staging] --> S_Supabase[(Supabase DB<br/>)]
         end
 
-        subgraph Testing["🔵 Testing"]
+        subgraph Testing["🔵 Testing Environment"]
             direction LR
-            T_Nextjs[Next.js App<br/>Branch: test/playwright] --> T_Supabase[(Supabase DB<br/>Ephemeral)]
+             T_Supabase[(Supabase DB for testing<br/>)]
         end
     end
 
@@ -84,13 +84,15 @@ graph TD
 
 1. Create New Service:
 
-   - **Service Type**: Database → Supabase
+   - **Service Type**: Supabase
    - **Version**: Latest
-   - **Toggle**: Production Mode
 
 2. Post-creation:
+   - Make supabase db public
    - Copy Connection String → `SUPABASE_DB_URL`
    - Get Service Role Key → `SUPABASE_SERVICE_ROLE_KEY`
+   - get annon key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - Get Supabase kong URL → `NEXT_PUBLIC_SUPABASE_URL`
    - Enable Automatic Backups
 
 ## Staging Environment Setup
