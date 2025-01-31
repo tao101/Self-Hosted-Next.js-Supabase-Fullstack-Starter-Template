@@ -75,6 +75,13 @@ graph TD
 - 🧪 Comprehensive testing suite (Playwright + Jest)
 - 🔄 Real-time capabilities out-of-the-box
 
+## Documentation
+
+- [Architecture Overview](architecture.md) - System design and component relationships
+- [Developer Guide](documentation.md) - Detailed setup and configuration instructions
+- [Deployment Guide](deployment.md) - Coolify deployment strategies for all environments
+- [Testing Strategy](documentation.md#testing-strategy) - E2E and unit testing guidelines
+
 ## Tech Stack
 
 Here are the core technologies used in this project:

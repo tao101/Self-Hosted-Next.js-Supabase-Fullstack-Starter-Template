@@ -202,35 +202,10 @@ graph TD
 
 ## Deployment Guide
 
-### Coolify Configuration
+**Related Documents**:
 
-```yaml
-# .coolify/settings.yml
-services:
-  nextjs:
-    build: .
-    ports:
-      - '3000:3000'
-    environment:
-      - SUPABASE_URL
-      - SUPABASE_KEY
-    predeploy:
-      - npm run db:migrate
-```
-
-### Environment Variables
-
-```env
-# Required Variables
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
-DATABASE_URL=
-
-# Optional
-SENTRY_DSN=
-NEXT_PUBLIC_SENTRY_ENABLED=
-```
+- [Architecture Overview](./architecture.md)
+- [Full Deployment Guide](./deployment.md)
 
 ### Backup Strategy
 

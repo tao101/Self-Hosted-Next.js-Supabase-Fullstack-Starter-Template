@@ -159,6 +159,8 @@ sequenceDiagram
     C->>C: Start application deployment only after successful migration
 ```
 
+> **See Also**: [Coolify Deployment Guide](./deployment.md) for detailed implementation steps
+
 To ensure safe and reliable database migrations during Coolify deployments, use this pre deploy script on your Coolify deployment for the nextjs application:
 
 ```bash

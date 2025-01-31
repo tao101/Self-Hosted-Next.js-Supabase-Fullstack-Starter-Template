@@ -123,31 +123,11 @@ graph TD
 
 ## Testing Environment Setup
 
-### 1. Next.js Testing App
-
-1. Create New Service:
-
-   - **Branch**: `test/playwright`
-   - **Environment Variables**:
-     ```env
-     NODE_ENV=test
-     NEXT_PUBLIC_ENV=test
-     NEXT_PUBLIC_SUPABASE_URL=<test-supabase-url>
-     SUPABASE_SERVICE_ROLE_KEY=<test-service-role>
-     ```
-
-2. Testing Features:
-   - Disable SSR
-   - Enable Test Mode
-   - No Caching
-
 ### 2. Supabase Testing DB
 
 1. Create Ephemeral Instance:
 
    - **Name**: `supabase-test`
-   - **Toggle**: Ephemeral Mode
-   - Disable Auth Providers
 
 2. Connection Details:
    ```env
@@ -156,44 +136,7 @@ graph TD
    SUPABASE_TEST_DB_URL=postgres://postgres:<password>@<test-host>:5432/postgres
    ```
 
-## Migration Strategy
-
-```mermaid
-journey
-    title Database Migration Process
-    section Deployment Trigger
-      Coolify UI: 5: Developer
-      Git Push: 5: System
-    section Migration Steps
-      Run Pre-deploy Script: 5: Script
-      Check DB Connection: 4: System
-      Apply Migrations: 5: Supabase CLI
-    section Post-Migration
-      Success: 5: Deploy App
-      Failure: 5: Alert Team
-```
-
-1. Required `pre-deploy.sh`:
-
-   ```bash
-   #!/bin/bash
-   supabase db push --db-url=$SUPABASE_DB_URL
-   ```
-
-2. Verification:
-   - Check Deployment Logs
-   - Monitor Database Health
-
 ## Monitoring & Backups
-
-```mermaid
-pie title Environment Monitoring
-    "Production" : 45
-    "Staging" : 30
-    "Testing" : 25
-    "Database Health" : 50
-    "App Performance" : 50
-```
 
 1. Next.js Monitoring:
 
@@ -202,9 +145,7 @@ pie title Environment Monitoring
    - Error Rate Tracking
 
 2. Supabase Backups:
-   - Daily Snapshots
-   - Point-in-Time Recovery
-   - S3-Compatible Storage
+   - backup Snapshots every 3 days using github workflows
 
 ## Troubleshooting
 
@@ -214,7 +155,7 @@ pie title Environment Monitoring
    - **DB Connection**: Verify Network Policies
    - **Migration Failures**: Validate SQL Schemas
 
-2. UI Indicators:
+2. UI Indicators in coolify ui:
    - 🔴 Red: Critical Failure
    - 🟡 Yellow: Performance Issues
    - 🟢 Green: Healthy
