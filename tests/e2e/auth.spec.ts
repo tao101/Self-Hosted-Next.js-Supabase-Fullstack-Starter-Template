@@ -7,7 +7,7 @@ const TEST_FIRST_NAME = 'Test';
 const TEST_LAST_NAME = 'User';
 
 test.beforeEach(async ({ page }) => {
-  await sleep(1000);
+  await page.waitForTimeout(2000); // 2 second delay between tests
   await page.goto('/');
 });
 

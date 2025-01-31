@@ -21,7 +21,7 @@ test.beforeAll(async () => {
 });
 test.beforeEach(async ({ page }) => {
   // Login before each test
-  await sleep(2000);
+  await page.waitForTimeout(2000); // 2 second delay between tests
 
   test.setTimeout(45000);
 

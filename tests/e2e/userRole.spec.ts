@@ -9,6 +9,10 @@ test.describe.parallel('User Role Access Control', () => {
   let adminUserId: string;
   let regularUserId: string;
 
+  test.beforeEach(async ({ page }) => {
+    await page.waitForTimeout(2000); // 2 second delay between tests
+  });
+
   test.beforeAll(async () => {
     // Create test users directly in Supabase
     const { data: adminUser } = await supabaseAdminTest.auth.admin.createUser({

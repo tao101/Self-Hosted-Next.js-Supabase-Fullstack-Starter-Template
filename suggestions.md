@@ -1,1 +1,0 @@
-- **Database Seeding:** Create scripts to seed the local Supabase database with realistic sample data for easier development and testing of UI components and features.
