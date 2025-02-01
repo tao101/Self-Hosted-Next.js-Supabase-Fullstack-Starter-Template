@@ -1,53 +1,114 @@
-# Cursor AI Agent Rules for Self-Hosted Next.js & Supabase Fullstack Starter Template
+This is a self-hosted Next.js and Supabase project. Designed for developers who want full control over their stack while maintaining rapid development capabilities. Optimized for deployment on Coolify.
 
-rules:
+1. Tech Stack
 
-# Tech Stack Foundation
+- Next.js 15+
+- Supabase (self-hosted)
+- React 19+
+- TypeScript 5+
+- Tailwind CSS
+- Shadcn UI
+- lucide-react
+- Legend State
+- Zod
+- Playwright
+- Sentry
+- Coolify
 
-tech_stack: - Next.js 15+ - Supabase (self-hosted) - React 19+ - TypeScript 5+ - Tailwind CSS - Shadcn UI - lucide-react - Legend State - Zod - Playwright - Sentry - Coolify
+2. Component Development
 
-# Component Development
+- Use Shadcn UI components as base
+- New components must:
+  - Be TypeScript-first with prop types
+  - Use Legend State observables for state
+  - Follow dashboard/sidebar.tsx pattern for layout components
+  - Support dark/light theme using CSS variables from globals.css
+  - Use dynamic imports for non-critical features
 
-component_development: - Use Shadcn UI components as base. - New components must: - Be TypeScript-first with prop types. - Use Legend State observables for state. - Follow `dashboard/sidebar.tsx` pattern for layout components. - Support dark/light theme using CSS variables from `globals.css`. - Use dynamic imports for non-critical features.
+3. API Development
 
-# API Development
+- Next.js API Routes:
 
-api_development:
-next_js_api_routes: - Include JSDoc comments for Swagger docs. - Use Zod for input validation. - Follow security patterns. - Use service role key for Supabase interactions as admin. - Implement error handling with Sentry `captureException`.
-next_js_actions: - Be colocated with related components in `app/(actions)` directory. - Use Zod schemas for input validation. - Never expose sensitive logic to client-side using 'use server' directive. - Use server-only utilities for Supabase interactions. - Implement error handling with Sentry `captureException`. - Follow security patterns.
+  - Include JSDoc comments for Swagger docs
+  - Use Zod for input validation
+  - Follow security patterns
+  - Use service role key for Supabase interactions as admin
+  - Implement error handling with Sentry captureException
 
-# Testing
+- Next.js Actions:
+  - Be colocated with related components in app/(actions) directory
+  - Use Zod schemas for input validation
+  - Never expose sensitive logic to client-side using 'use server' directive
+  - Use server-only utilities for Supabase interactions
+  - Implement error handling with Sentry captureException
+  - Follow security patterns
 
-testing: - All new features require Playwright tests matching `tests/e2e/account.spec.ts` structure. - Test setup must: - Use `supabaseAdminTest` client from `tests/utils/supabaseTest.ts`. - Include mobile testing using `playwright.config.ts`. - Use `test.afterAll` to cleanup after each test. - Use `test.beforeAll` to setup before each test.
+4. Testing
 
-# State Management
+- All new features require Playwright tests matching tests/e2e/account.spec.ts structure
+- Test setup must:
+  - Use supabaseAdminTest client from tests/utils/supabaseTest.ts
+  - Include mobile testing using playwright.config.ts
+  - Use test.afterAll to cleanup after each test
+  - Use test.beforeAll to setup before each test
 
-state_management: - Use Legend State observables. - Wrap components with `observer()` HOC when using observables. - Complex state logic should be in dedicated stores under `src/stores/`.
+5. State Management
 
-# Styling
+- Use Legend State observables
+- Wrap components with observer() HOC when using observables
+- Complex state logic should be in dedicated stores under src/stores/
 
-styling: - Follow Tailwind utility-first approach from `globals.css` and `tailwind.config.ts`. - Use `shadcn/ui` for components. - Mobile-first responsive design using `useIsMobile()` hook. - Use `motion` (framer motion) for animations when appropriate. - Use icons from `lucide-react`.
+6. Styling
 
-# Documentation
+- Follow Tailwind utility-first approach from globals.css and tailwind.config.ts
+- Use shadcn/ui for components
+- Mobile-first responsive design using useIsMobile() hook
+- Use motion (framer motion) for animations when appropriate
+- Use icons from lucide-react
 
-documentation: - Update relevant sections when making changes: - `architecture.md` for system design changes. - `documentation.md` for setup/process changes. - `suggestions.md` for DX improvements. - Keep JSDoc comments updated in API routes.
+7. Documentation
 
-# Security
+- Update relevant sections when making changes:
+  - architecture.md for system design changes
+  - documentation.md for setup/process changes
+  - suggestions.md for DX improvements
+  - Keep JSDoc comments updated in API routes
 
-security: - Never expose `SUPABASE_SERVICE_ROLE_KEY` client-side. - All auth forms must implement OTP protection. - Use database-enforced RLS policies for role checks. - Use user role to check for access.
+8. Security
 
-# Performance
+- Never expose SUPABASE_SERVICE_ROLE_KEY client-side
+- All auth forms must implement OTP protection
+- Use database-enforced RLS policies for role checks
+- Use user role to check for access
 
-performance: - Use dynamic imports for non-critical components. - Optimize Supabase queries with `select()`/`range()`. - Implement Suspense boundaries for data fetching. - Follow `carousel.tsx` patterns for heavy UI components. - Use Supabase for real-time data updates.
+9. Performance
 
-# Deployment
+- Use dynamic imports for non-critical components
+- Optimize Supabase queries with select()/range()
+- Implement Suspense boundaries for data fetching
+- Follow carousel.tsx patterns for heavy UI components
+- Use Supabase for real-time data updates
 
-deployment: - All Supabase migrations must: - Be included in PRs via `supabase/migrations/`. - Follow patterns in `architecture.md`. - Coolify configuration must: - Use pre-deploy scripts for migrations. - Follow backup strategy from `documentation.md`.
+10. Deployment
 
-# Code Quality
+- All Supabase migrations must:
+  - Be included in PRs via supabase/migrations/
+  - Follow patterns in architecture.md
+- Coolify configuration must:
+  - Use pre-deploy scripts for migrations
+  - Follow backup strategy from documentation.md
 
-code_quality: - Strict TypeScript enforcement (no implicit any). - Follow ESLint rules from `.eslintrc.json`. - Match Prettier formatting from `.prettierrc`. - All components must have prop types. - Implement loading states if needed. - Implement error boundaries in components and error messages using sonner Toast if needed.
+11. Code Quality
 
-# Error Handling
+- Strict TypeScript enforcement (no implicit any)
+- Follow ESLint rules from .eslintrc.json
+- Match Prettier formatting from .prettierrc
+- All components must have prop types
+- Implement loading states if needed
+- Implement error boundaries in components and error messages using sonner Toast if needed
 
-error_handling: - Integrate Sentry monitoring. - Use Zod for error validation in API routes. - Implement proper error boundaries in components.
+12. Error Handling
+
+- Integrate Sentry monitoring
+- Use Zod for error validation in API routes
+- Implement proper error boundaries in components
