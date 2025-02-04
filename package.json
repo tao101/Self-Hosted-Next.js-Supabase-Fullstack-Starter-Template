@@ -12,8 +12,7 @@
     "supabase:local": "supabase start",
     "supabase:reset": "supabase stop && supabase delete && npm run supabase:local",
     "ci:check": "npm run lint && npm run test ",
-    "test": "playwright test ",
-    "test:predeploy": "SUPABASE_DB_URL='postgresql://postgres:postgres@127.0.0.1:54322/postgres' ./pre-deploy.sh"
+    "test": "playwright test "
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
