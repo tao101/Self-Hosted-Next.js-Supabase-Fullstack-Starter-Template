@@ -3,8 +3,7 @@
   "scripts": {
     "setup": "supabase start && npm run supabase:genTypes",
     "dev": "next dev",
-    "build": "next build",
-    "pre-deploy": "bash pre-deploy.sh",
+    "build": "supabase db push --db-url $SUPABASE_DB_URL && next build",
     "build:local": "supabase  db push  --local && next build",
     "start": "next start",
     "lint": "next lint",
