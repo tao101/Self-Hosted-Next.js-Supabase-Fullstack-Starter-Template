@@ -22,7 +22,7 @@ values (
   false,
   26214400, -- 5MB limit
   array['image/jpeg', 'image/png', 'image/webp']
-);
+) on conflict (id) do nothing;;
 
 
 
