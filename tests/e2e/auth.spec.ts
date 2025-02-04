@@ -7,7 +7,6 @@ const TEST_FIRST_NAME = 'Test';
 const TEST_LAST_NAME = 'User';
 
 test.beforeEach(async ({ page }) => {
-  await page.waitForTimeout(65 * 1000); // 60 second delay between tests
   await page.goto('/');
 });
 
@@ -67,6 +66,8 @@ test.describe.serial('Authentication Flow', () => {
 
   test('should allow existing user to log in with OTP', async ({ page }) => {
     await page.goto('/auth/get-started');
+    await page.waitForTimeout(process.env.CI ? 65 * 1000 : 2 * 1000); // Delay between tests: 65s in CI, 2s locally
+
     // Fill email form
     await page.getByLabel('Email').fill(TEST_EMAIL);
     await page.getByRole('button', { name: /Send OTP & Magic Link/i }).click();
@@ -124,6 +125,8 @@ test.describe.parallel('Auth Form Validation', () => {
 
   test('should reject invalid OTP attempts', async ({ page }) => {
     await page.goto('/auth/get-started');
+
+    await page.waitForTimeout(process.env.CI ? 65 * 1000 : 2 * 1000); // Delay between tests: 65s in CI, 2s locally
 
     await page.getByRole('button', { name: /Sign Up/i }).click();
 

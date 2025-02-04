@@ -46,8 +46,6 @@ test.beforeAll(async ({ browser }) => {
 test.beforeEach(async ({ page }) => {
   // Reuse authenticated state
   await page.goto('/dashboard/account');
-  await page.waitForLoadState('networkidle');
-  await page.waitForTimeout(65 * 1000); // 60 second delay between tests
 });
 
 test('should update profile information', async ({ page }) => {

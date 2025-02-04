@@ -9,17 +9,17 @@ test.describe.parallel('User Role Access Control', () => {
   let adminUserId: string;
   let regularUserId: string;
 
-  test.beforeEach(async ({ page }) => {
-    await page.waitForTimeout(65 * 1000); // 60 second delay between tests
-  });
+  test.beforeEach(async ({ page }) => {});
 
-  test.beforeAll(async () => {
+  test.beforeAll(async ({ page }) => {
     // Create test users directly in Supabase
     const { data: adminUser } = await supabaseAdminTest.auth.admin.createUser({
       email: ADMIN_EMAIL,
       email_confirm: true,
     });
     adminUserId = adminUser.user!.id;
+
+    await page.waitForTimeout(process.env.CI ? 65 * 1000 : 2 * 1000); // Delay between tests: 65s in CI, 2s locally
 
     const { data: regularUser } = await supabaseAdminTest.auth.admin.createUser(
       {
@@ -76,6 +76,8 @@ test.describe.parallel('User Role Access Control', () => {
     // Full UI login flow for admin
     // Full UI login flow
     await page.goto('/auth/get-started');
+    await page.waitForTimeout(process.env.CI ? 65 * 1000 : 2 * 1000); // Delay between tests: 65s in CI, 2s locally
+
     await page.getByLabel('Email').fill(ADMIN_EMAIL);
     await page.getByRole('button', { name: /Send OTP & Magic Link/i }).click();
     //await page.waitForSelector(':text-matches("6-digit", "i")');
