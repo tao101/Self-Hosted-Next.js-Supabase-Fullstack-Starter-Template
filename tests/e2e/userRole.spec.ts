@@ -10,7 +10,7 @@ test.describe.parallel('User Role Access Control', () => {
   let regularUserId: string;
 
   test.beforeEach(async ({ page }) => {
-    await page.waitForTimeout(2000); // 2 second delay between tests
+    await page.waitForTimeout(65 * 1000); // 60 second delay between tests
   });
 
   test.beforeAll(async () => {

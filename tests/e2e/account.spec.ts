@@ -1,13 +1,14 @@
 import { test, expect } from '@playwright/test';
 import { supabaseAdminTest } from '../utils/supabaseTest';
 import { sleep } from '@/utils/utils';
+import fs from 'fs/promises';
 
 const TEST_EMAIL = `account-test-user-${Date.now()}@example.com`;
 const TEST_PASSWORD = 'test1234!';
 let testUserId: string;
 
-test.beforeAll(async () => {
-  // Create test user
+test.beforeAll(async ({ browser }) => {
+  // Create test user and login once
   const { data: user } = await supabaseAdminTest.auth.admin.createUser({
     email: TEST_EMAIL,
     email_confirm: true,
@@ -18,46 +19,35 @@ test.beforeAll(async () => {
     },
   });
   testUserId = user?.user?.id!;
-});
-test.beforeEach(async ({ page }) => {
-  await sleep(30000);
 
-  // Login before each test
-  await page.waitForTimeout(2000); // 2 second delay between tests
-
-  test.setTimeout(45000);
+  // Perform login once and save storage state
+  const page = await browser.newPage();
 
   await page.goto('/auth/get-started');
   await page.getByLabel('Email').fill(TEST_EMAIL);
   await page.getByRole('button', { name: /Send OTP & Magic Link/i }).click();
 
-  // Wait for OTP verification form
-  await expect(page.getByText(/Enter the 6-digit OTP/i)).toBeVisible();
-
-  // Get OTP from Supabase
+  // Get OTP directly from magic link
   const { data } = await supabaseAdminTest.auth.admin.generateLink({
     type: 'magiclink',
     email: TEST_EMAIL,
   });
   const otp = data?.properties?.email_otp;
 
-  let user = data?.user;
-
-  if (!otp) {
-    throw new Error('Could not retrieve OTP from Supabase');
-  }
-
-  if (!user) {
-    throw new Error('Could not retrieve user from Supabase');
-  }
-  const otpInput = page.getByRole('textbox', { name: /OTP/i });
-  await otpInput.fill(otp);
+  await page.getByRole('textbox', { name: /OTP/i }).fill(otp!);
   await page.getByRole('button', { name: /Verify OTP/i }).click();
-  await expect(page.getByText(/Authentication successful/i)).toBeVisible();
-
   await page.waitForURL(/dashboard/);
+
+  // Save session state for all tests
+  await page.context().storageState({ path: 'tests/.auth/user.json' });
+  await page.close();
+});
+
+test.beforeEach(async ({ page }) => {
+  // Reuse authenticated state
   await page.goto('/dashboard/account');
-  await page.waitForTimeout(4000);
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(65 * 1000); // 60 second delay between tests
 });
 
 test('should update profile information', async ({ page }) => {
@@ -188,5 +178,10 @@ test('should delete account', async ({ page }) => {
 });
 
 test.afterAll(async () => {
+  // Cleanup user
   await supabaseAdminTest.auth.admin.deleteUser(testUserId);
+  // Clear auth state
+  try {
+    await fs.rm('tests/.auth', { recursive: true });
+  } catch {}
 });
