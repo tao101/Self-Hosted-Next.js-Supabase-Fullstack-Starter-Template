@@ -3,7 +3,7 @@
   "scripts": {
     "setup": "supabase start && npm run supabase:genTypes",
     "dev": "next dev",
-    "build": "supabase  db push  --db-url 'postgresql://postgres:b8Bn518eTFV1TR5dui3fsxmuaVR4OcKA@supabasekong-loo840goko8c48wssw84sos0:5447/postgres' && next build",
+    "build": " next build",
     "build:local": "supabase  db push  --local && next build",
     "start": "next start",
     "lint": "next lint",
