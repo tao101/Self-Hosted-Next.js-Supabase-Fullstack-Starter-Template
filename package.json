@@ -3,7 +3,7 @@
   "scripts": {
     "setup": "supabase start && npm run supabase:genTypes",
     "dev": "next dev",
-    "build": "supabase db push --db-url $SUPABASE_DB_URL && next build",
+    "build": "npm run pre-deploy && next build",
     "build:local": "supabase  db push  --local && next build",
     "start": "next start",
     "lint": "next lint",
@@ -12,7 +12,8 @@
     "supabase:local": "supabase start",
     "supabase:reset": "supabase stop && supabase delete && npm run supabase:local",
     "ci:check": "npm run lint && npm run test ",
-    "test": "playwright test "
+    "test": "playwright test ",
+    "pre-deploy": "bash pre-deploy.sh"
   },
   "engines": {
     "node": ">=20.18.1"
