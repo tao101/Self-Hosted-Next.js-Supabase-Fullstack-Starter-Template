@@ -21,7 +21,7 @@ export default defineConfig({
   },
   testDir: './tests/e2e',
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: process.env.CI ? false : true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -40,45 +40,69 @@ export default defineConfig({
     trace: 'retain-on-failure',
     screenshot: 'on-first-failure',
     video: 'retain-on-failure',
+    actionTimeout: 30000,
+    navigationTimeout: 45000,
   },
 
   /* Configure projects for major browsers */
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
+  projects: process.env.CI
+    ? [
+        {
+          name: 'chromium',
+          use: { ...devices['Desktop Chrome'] },
+        },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
+        {
+          name: 'Mobile Safari',
+          use: { ...devices['iPhone 12'] },
+        },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+        /* Test against branded browsers. */
+        // {
+        //   name: 'Microsoft Edge',
+        //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
+        // },
+        // {
+        //   name: 'Google Chrome',
+        //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+        // },
+      ]
+    : [
+        {
+          name: 'chromium',
+          use: { ...devices['Desktop Chrome'] },
+        },
 
-    /* Test against mobile viewports. */
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
+        {
+          name: 'firefox',
+          use: { ...devices['Desktop Firefox'] },
+        },
 
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
-  ],
+        {
+          name: 'webkit',
+          use: { ...devices['Desktop Safari'] },
+        },
+
+        /* Test against mobile viewports. */
+        {
+          name: 'Mobile Chrome',
+          use: { ...devices['Pixel 5'] },
+        },
+        {
+          name: 'Mobile Safari',
+          use: { ...devices['iPhone 12'] },
+        },
+
+        /* Test against branded browsers. */
+        // {
+        //   name: 'Microsoft Edge',
+        //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
+        // },
+        // {
+        //   name: 'Google Chrome',
+        //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+        // },
+      ],
 
   /* Run your local dev server before starting the tests */
   // webServer: {

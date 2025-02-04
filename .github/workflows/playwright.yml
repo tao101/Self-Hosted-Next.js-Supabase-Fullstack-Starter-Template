@@ -47,7 +47,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_TEST_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY_TEST }}
           SUPABASE_TEST_DB_URL: ${{ secrets.SUPABASE_TEST_DB_URL }}
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
-        run: npx playwright test
+        run: CI=true npx playwright test
 
       - name: Upload HTML Report
         if: always()

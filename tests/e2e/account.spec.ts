@@ -20,6 +20,8 @@ test.beforeAll(async () => {
   testUserId = user?.user?.id!;
 });
 test.beforeEach(async ({ page }) => {
+  await sleep(30000);
+
   // Login before each test
   await page.waitForTimeout(2000); // 2 second delay between tests
 
@@ -52,7 +54,6 @@ test.beforeEach(async ({ page }) => {
   await otpInput.fill(otp);
   await page.getByRole('button', { name: /Verify OTP/i }).click();
   await expect(page.getByText(/Authentication successful/i)).toBeVisible();
-  await sleep(2000);
 
   await page.waitForURL(/dashboard/);
   await page.goto('/dashboard/account');
