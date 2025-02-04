@@ -23,7 +23,7 @@ jobs:
         env:
           TEST_DB_URL: ${{ secrets.SUPABASE_TEST_DB_URL }}
           SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY_TEST }}
-        run: npx supabase db reset --db-url $TEST_DB_URL
+        run: CI=true npx supabase db reset --db-url $TEST_DB_URL
 
       - name: Install dependencies
         run: npm install
