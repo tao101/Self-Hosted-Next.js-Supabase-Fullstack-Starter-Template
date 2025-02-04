@@ -1,9 +1,12 @@
+# Project Overview
+
 This is a self-hosted Next.js and Supabase project. Designed for developers who want full control over their stack while maintaining rapid development capabilities. Optimized for deployment on Coolify.
 
 1. Tech Stack
 
 - Next.js 15+
-- Supabase (self-hosted)
+- Supabase (self-hosted) cli
+- Supabase migrations
 - React 19+
 - TypeScript 5+
 - Tailwind CSS
