@@ -10,7 +10,7 @@ on:
   pull_request:
     branches: [main, staging]
 concurrency:
-  group: playwright-tests
+  group: playwright-tests-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
