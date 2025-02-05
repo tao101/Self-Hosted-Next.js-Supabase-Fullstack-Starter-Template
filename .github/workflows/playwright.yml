@@ -79,7 +79,7 @@ jobs:
               body: `🔍 **Playwright Test Report**\n\nView results: ${{ steps.report-url.outputs.url }}\nDownload artifact: [playwright-report](${{ steps.report-url.outputs.url }}/artifacts)`
             })
 
-      
+      - name: Update Workflow Status
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{ secrets.GITHUB_TOKEN }}
