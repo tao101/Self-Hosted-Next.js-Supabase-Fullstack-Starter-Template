@@ -1,5 +1,11 @@
 name: Playwright Tests
 on:
+  inputs:
+        branch:
+          description: 'Branch to run tests against'
+          required: true
+          default: 'main'
+          type: string
   pull_request:
     branches: [main, staging]
 concurrency:
