@@ -9,9 +9,10 @@ on:
         type: string
   pull_request:
     branches: [main, staging]
+    types: [opened, synchronize, reopened]
 concurrency:
   group: playwright-tests-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -79,12 +80,3 @@ jobs:
               repo: context.repo.repo,
               body: `🔍 **Playwright Test Report**\n\nView results: ${{ steps.report-url.outputs.url }}\nDownload artifact: [playwright-report](${{ steps.report-url.outputs.url }}/artifacts)`
             })
-
-      - name: Update Workflow Status
-        uses: Sibz/github-status-action@v1
-        with:
-          authToken: ${{ secrets.GITHUB_TOKEN }}
-          context: Playwright Tests
-          description: View test report
-          state: ${{ job.status }}
-          target_url: ${{ steps.report-url.outputs.url }}
