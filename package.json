@@ -14,7 +14,7 @@
     "ci:check": "npm run lint && npm run test ",
     "test:prod": "supabase db push --db-url $SUPABASE_TEST_DB_URL && playwright test ",
     "test": "playwright test",
-    "test:fast": "playwright test --workers '80%' --retries 1 --project=chromium "
+    "test:chrom": "playwright test --project=chromium  "
   },
   "engines": {
     "node": ">=20.18.1"
