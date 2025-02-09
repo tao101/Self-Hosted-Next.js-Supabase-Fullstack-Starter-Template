@@ -38,6 +38,14 @@ jobs:
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+      
+       - name: Build Next.js
+        run: npm run build
+
+      - name: Start Next.js Server
+        run: |
+          npm run start &
+          sleep 10
 
       - name: Run Playwright tests
         env:
