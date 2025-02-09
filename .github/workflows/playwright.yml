@@ -43,9 +43,12 @@ jobs:
         run: npm run build
 
       - name: Start Next.js Server
+        run: npm run start
+
+      - name: Wait for Next.js Server
         run: |
-          npm run start &
-          sleep 10
+          echo "Waiting 30 seconds for Next.js server to be ready..."
+          sleep 30
 
       - name: Run Playwright tests
         env:
