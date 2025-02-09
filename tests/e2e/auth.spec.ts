@@ -65,8 +65,10 @@ test.describe.serial('Authentication Flow', () => {
   });
 
   test('should allow existing user to log in with OTP', async ({ page }) => {
+    // Wait 60 seconds to ensure OTP expiry
+    await page.waitForTimeout(60000);
+
     await page.goto('/auth/get-started');
-    await page.waitForTimeout(process.env.CI ? 65 * 1000 : 2 * 1000); // Delay between tests: 65s in CI, 2s locally
 
     // Fill email form
     await page.getByLabel('Email').fill(TEST_EMAIL);
@@ -125,8 +127,6 @@ test.describe.parallel('Auth Form Validation', () => {
 
   test('should reject invalid OTP attempts', async ({ page }) => {
     await page.goto('/auth/get-started');
-
-    await page.waitForTimeout(process.env.CI ? 65 * 1000 : 2 * 1000); // Delay between tests: 65s in CI, 2s locally
 
     await page.getByRole('button', { name: /Sign Up/i }).click();
 

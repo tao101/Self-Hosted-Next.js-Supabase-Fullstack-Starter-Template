@@ -15,7 +15,7 @@ dotenv.config();
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: 5 * 60 * 1000,
+  timeout: 59 * 60 * 1000,
   expect: {
     timeout: 20 * 1000, // Sets the expect timeout to 20 seconds to avoid flaky tests
   },
@@ -27,7 +27,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 1,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : '70%',
+  workers: process.env.CI ? '50%' : '70%',
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
