@@ -52,6 +52,7 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY_TEST: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY_TEST }}
           SUPABASE_TEST_DB_URL: ${{ secrets.SUPABASE_TEST_DB_URL }}
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          SUPABASE_TEST_PROJECT_REF: ${{ secrets.SUPABASE_TEST_PROJECT_REF }}
         run: CI=true npx playwright test
 
       - name: Upload HTML Report
