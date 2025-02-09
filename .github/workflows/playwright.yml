@@ -10,6 +10,12 @@ on:
   pull_request:
     branches: [main, staging]
     types: [opened, synchronize, reopened]
+
+# Add these permissions
+permissions:
+  contents: read
+  pull-requests: write
+
 concurrency:
   group: playwright-tests-${{ github.ref }}
   cancel-in-progress: true
@@ -54,7 +60,7 @@ jobs:
           SUPABASE_TEST_DB_URL: ${{ secrets.SUPABASE_TEST_DB_URL }}
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
           SUPABASE_TEST_PROJECT_REF: ${{ secrets.SUPABASE_TEST_PROJECT_REF }}
-        run: CI=true npx playwright test
+        run: CI=true npx playwright test --workers '100%'
 
       - name: Upload HTML Report
         if: always()
