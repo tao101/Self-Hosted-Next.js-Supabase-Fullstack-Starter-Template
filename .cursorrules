@@ -1,115 +1,117 @@
-# Cursor AI Agent Rules for SaaS Template
+# Project Overview
 
-### Tech Stack Foundation
+This is a self-hosted Next.js and Supabase project. Designed for developers who want full control over their stack while maintaining rapid development capabilities. Optimized for deployment on Coolify.
 
-This project uses a Next.js 15+ full-stack architecture with:
+1. Tech Stack
 
-- React 19+ for UI components (reference: components/ui/)
-- TypeScript 5+ for type safety (tsconfig.json:1-30)
-- Tailwind CSS + Shadcn UI + lucide-react for styling (components.json:1-25)
-- Legend State for reactive state management (stores/userProvider.tsx:1-15)
-- Zod for schema validation (tests/e2e/userRole.spec.ts:28-33)
-- Playwright for E2E testing (playwright.config.ts:1-70)
-- Sentry for error monitoring (documentation.md:170-183)
+- Next.js 15+
+- Supabase (self-hosted) cli
+- Supabase migrations
+- React 19+
+- TypeScript 5+
+- Tailwind CSS
+- Shadcn UI
+- lucide-react
+- Legend State
+- Zod
+- Playwright
+- Sentry
+- Coolify
 
-### Component Development
+2. Component Development
 
-1. Use Shadcn UI components as base (reference: components/ui/)
-2. New components must:
-   - Be TypeScript-first with prop types (example: components/ui/carousel.tsx:1-223)
-   - Use Legend State observables for state (example: components/dashboard/userNav.tsx:1-28)
-   - Follow dashboard/sidebar.tsx (1-35) pattern for layout components
-   - Support dark/light theme using CSS variables from globals.css (lines 5-56)
-   - Use dynamic imports for non-critical features (reference: performance rules)
+- Use Shadcn UI components as base
+- New components must:
+  - Be TypeScript-first with prop types
+  - Use Legend State observables for state
+  - Follow dashboard/sidebar.tsx pattern for layout components
+  - Support dark/light theme using CSS variables from globals.css
+  - Use dynamic imports for non-critical features
 
-### API Development
+3. API Development
 
-1. Next.js API routes must:
+- Next.js API Routes:
 
-   - Include JSDoc comments for Swagger docs
-   - Use Zod for input validation
-   - Follow security patterns
-   - Use service role key for Supabase interactions as admin
-   - Implement error handling with Sentry captureException
+  - Include JSDoc comments for Swagger docs
+  - Use Zod for input validation
+  - Follow security patterns
+  - Use service role key for Supabase interactions as admin
+  - Implement error handling with Sentry captureException
 
-2. Next.js Actions must:
-   - Be colocated with related components in app/(actions) directory
-   - Use Zod schemas for input validation
-   - Never expose sensitive logic to client-side using 'use server' directive
-   - Use server-only utilities for Supabase interactions (reference: utils/supabase/supabaseAdmin.ts:1-15)
-   - Implement error handling with Sentry captureException (documentation.md:170-183)
-   - Follow security patterns.
+- Next.js Actions:
+  - Be colocated with related components in app/(actions) directory
+  - Use Zod schemas for input validation
+  - Never expose sensitive logic to client-side using 'use server' directive
+  - Use server-only utilities for Supabase interactions
+  - Implement error handling with Sentry captureException
+  - Follow security patterns
 
-### Testing
+4. Testing
 
-1. All new features require Playwright tests matching:
-   - tests/e2e/account.spec.ts structure
-2. Test setup must:
-   - Use supabaseAdminTest client from tests/utils/supabaseTest.ts (1-18)
-   - Include mobile testing using playwright.config.ts (lines 63-70)
-   - Use test.afterAll to cleanup after each test
-   - Use test.beforeAll to setup before each test
+- All new features require Playwright tests matching tests/e2e/account.spec.ts structure
+- Test setup must:
+  - Use supabaseAdminTest client from tests/utils/supabaseTest.ts
+  - Include mobile testing using playwright.config.ts
+  - Use test.afterAll to cleanup after each test
+  - Use test.beforeAll to setup before each test
 
-### State Management
+5. State Management
 
-1. Use Legend State observables (example: components/dashboard/sidebar.tsx:34)
-2. Wrap components with observer() HOC when using observables (example: userNav.tsx:25)
-3. Complex state logic should be in dedicated stores under src/stores/
+- Use Legend State observables
+- Wrap components with observer() HOC when using observables
+- Complex state logic should be in dedicated stores under src/stores/
 
-### Styling
+6. Styling
 
-1. Follow Tailwind utility-first approach from globals.css and tailwind.config.ts
-2. Use shadcn/ui for components
-3. Mobile-first responsive design using useIsMobile() hook (reference: components/ui/sidebar.tsx:19)
-4. Use motion (framer motion) for animations when appropriate
-5. use icons form lucide-react
+- Follow Tailwind utility-first approach from globals.css and tailwind.config.ts
+- Use shadcn/ui for components
+- Mobile-first responsive design using useIsMobile() hook
+- Use motion (framer motion) for animations when appropriate
+- Use icons from lucide-react
 
-### Documentation
+7. Documentation
 
-1. Update relevant sections when making changes:
-   - architecture.md (1-160) for system design changes
-   - documentation.md (1-188) for setup/process changes
-   - suggestions.md (1-22) for DX improvements
-2. Keep JSDoc comments updated in API routes (reference: architecture.md:22-27)
+- Update relevant sections when making changes:
+  - architecture.md for system design changes
+  - documentation.md for setup/process changes
+  - suggestions.md for DX improvements
+  - Keep JSDoc comments updated in API routes
 
-### Security
+8. Security
 
-1. Never expose SUPABASE_SERVICE_ROLE_KEY client-side
-2. All auth forms must implement OTP protection like userRole.spec.ts (38-60)
-3. Use database-enforced RLS policies for role checks
-4. Use user role to check for access
+- Never expose SUPABASE_SERVICE_ROLE_KEY client-side
+- All auth forms must implement OTP protection
+- Use database-enforced RLS policies for role checks
+- Use user role to check for access
 
-### Performance
+9. Performance
 
-1. Use dynamic imports for non-critical components:
-   ```ts
-   dynamic(() => import('@/components/Chart'), { ssr: false });
-   ```
-2. Optimize Supabase queries with select()/range()
-3. Implement Suspense boundaries for data fetching
-4. Follow carousel.tsx (1-223) patterns for heavy UI components
-5. Use Supabase for real-time data updates
+- Use dynamic imports for non-critical components
+- Optimize Supabase queries with select()/range()
+- Implement Suspense boundaries for data fetching
+- Follow carousel.tsx patterns for heavy UI components
+- Use Supabase for real-time data updates
 
-### Deployment
+10. Deployment
 
-1. All Supabase migrations must:
-   - Be included in PRs via supabase/migrations/
-   - Follow patterns in architecture.md (lines 116-121)
-2. Coolify configuration must:
-   - Use pre-deploy scripts for migrations
-   - Follow backup strategy from documentation.md (lines 185-208)
+- All Supabase migrations must:
+  - Be included in PRs via supabase/migrations/
+  - Follow patterns in architecture.md
+- Coolify configuration must:
+  - Use pre-deploy scripts for migrations
+  - Follow backup strategy from documentation.md
 
-### Code Quality
+11. Code Quality
 
-1. Strict TypeScript enforcement (no implicit any)
-2. Follow ESLint rules from .eslintrc.json (1-2)
-3. Match Prettier formatting from .prettierrc (1-7)
-4. All components must have prop types (example: components/ui/drawer.tsx:17-40)
-5. Implement loading states if needed
-6. Implement error boundaries in components and error messages using sonner Toast if needed
+- Strict TypeScript enforcement (no implicit any)
+- Follow ESLint rules from .eslintrc.json
+- Match Prettier formatting from .prettierrc
+- All components must have prop types
+- Implement loading states if needed
+- Implement error boundaries in components and error messages using sonner Toast if needed
 
-### Error Handling
+12. Error Handling
 
-1. Integrate Sentry monitoring following documentation.md (170-183)
-2. Use Zod for error validation in API routes
-3. Implement proper error boundaries in components
+- Integrate Sentry monitoring
+- Use Zod for error validation in API routes
+- Implement proper error boundaries in components

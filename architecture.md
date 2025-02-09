@@ -36,27 +36,80 @@ This document outlines the architecture of the SaaS template project, built with
       - Backups are scheduled to run daily at midnight UTC via `.github/workflows/supabase-backup.yml`.
       - **Note:** Backup files are currently not automatically stored in a separate storage location. Further development is needed to upload backups to cloud storage (e.g., AWS S3, Google Cloud Storage) for secure retention and restore capabilities.
 
-## Architecture Diagram
+## Architecture Diagrams
+
+### Web Application Architecture
 
 ```mermaid
 graph LR
 subgraph Coolify Server
 subgraph Next.js Application
-A[Frontend  Next.js]
+A[Frontend Next.js]
 subgraph Backend
 B[Next.js Actions]
-C[Next.js API Routes for webhooks and shared apis]
+C[Next.js API Routes]
 end
 end
-D[Self-hosted Supabase]
+D[Supabase <br/>- Auth<br/>- Realtime<br/>- PostgreSQL DB<br/>- Storage]
 A --> B & C
 B & C --> D
 end
-style A fill:#000,stroke:#333,stroke-width:2px
+style A fill:#0b0,stroke:#333,stroke-width:2px
 style D fill:#fff,stroke:#333,stroke-width:2px
 ```
 
+### Architecture with Mobile App
+
+```mermaid
+graph LR
+subgraph Coolify Server
+subgraph Next.js
+C[Next.js API Routes]
+end
+D[Supabase <br/>- Auth<br/>- Realtime<br/>- PostgreSQL DB<br/>- Storage]
+end
+
+subgraph Mobile
+E[Expo React Native App]
+end
+
+E --> C
+E --> D
+C --> D
+style E fill:#0b0,stroke:#333,stroke-width:2px
+```
+
+**Important Notes:**
+
+1. The current codebase focuses on web implementation only
+2. For mobile development, we suggest:
+   - Using Expo (React Native) for cross-platform development
+   - Sharing validation logic (Zod schemas) between web and mobile
+   - Reusing Next.js API routes where possible
+   - Direct mobile->Supabase integration for Auth/Realtime
+   - Creating a shared types package for TS types
+3. Supabase services remain the single source of truth for:
+   - User authentication
+   - Real-time updates
+   - Database operations
+   - File storage
+
 ## Development Workflow
+
+```mermaid
+graph TD
+    A[Create Feature Branch] --> B[Local Development]
+    B --> C[Develop, Write Tests & Run all Tests Locally]
+    C --> D[Create PR to Staging]
+    D --> E{Run Automated Tests}
+    E -->|Pass| F[Merge to Staging]
+    E -->|Fail| C
+    F --> G[Auto-deploy to Staging]
+    G --> H[Verify Staging]
+    H --> I{Merge to Production?}
+    I -->|Yes| J[Merge to Main]
+    J --> K[Auto-deploy to Production]
+```
 
 1.  **Local Development:**
 
@@ -67,15 +120,16 @@ style D fill:#fff,stroke:#333,stroke-width:2px
 2.  **Branching Strategy:**
 
     - **`staging` branch:** Represents the staging environment. Feature branches are created from and merged into this branch.
-    - **`production` branch:** Represents the production environment. Staging branch is merged into production after thorough testing and approval.
+    - **`production` (main) branch:** Represents the production environment. Staging branch is merged into production after thorough testing and approval.
     - **Feature branches:** Developers create feature branches from `staging` for each new feature, task, or bug fix. Branch names should be descriptive (e.g., `feature/user-profiles`, `fix/login-bug`).
 
 3.  **Pull Requests (PRs) and Merging:**
 
     - Once a feature is complete and tested locally, developers create a Pull Request (PR) to merge their feature branch into the `staging` branch.
+    - **E2E Tests:** PRs must pass all E2E Playwright tests and must include tests for the new feature or bug fix.
     - **Code Review:** PRs undergo code review by other developers to ensure code quality and catch potential issues.
-    - **Automated Testing:** Upon PR creation, automated tests (unit tests, integration tests - if implemented) are run.
-    - **Supabase Migrations:** If the feature includes database schema changes, a Supabase migration script is included in the PR.
+    - **Automated Testing:** Upon PR creation, automated E2E Playwright tests are run.
+    - **Supabase Migrations:** If the feature includes database schema changes, a Supabase migration script should be created and included in the PR.
 
 4.  **Staging Deployment:**
 
@@ -84,40 +138,43 @@ style D fill:#fff,stroke:#333,stroke-width:2px
     - **Migration Execution on Staging:** As part of the staging deployment process (ideally _before_ the new application version is live), Supabase migrations are automatically applied to the staging Supabase instance. _(See "Supabase Migrations in Coolify Deployments" below)_
 
 5.  **Production Deployment:**
-    - After successful testing and validation in the staging environment, the `staging` branch is merged into the `production` branch.
-    - **Automated Deployment to Production on Coolify:** Coolify automatically deploys the `production` branch to the production environment upon merge.
+    - After successful testing and validation in the staging environment, the `staging` branch is merged into the `production` (main) branch.
+    - **Automated Deployment to Production on Coolify:** Coolify automatically deploys the `production` (main) branch to the production environment upon merge.
     - **Migration Execution on Production:** Similar to staging, Supabase migrations are automatically applied to the production Supabase instance as part of the production deployment process. _(See "Supabase Migrations in Coolify Deployments" below)_
 
 ## Supabase Migrations in Coolify Deployments
 
-To ensure database migrations are run before each deployment in Coolify _without modifying `coolify.yml`_, you can leverage Coolify's **deployment scripts**. Specifically, you would use a **Post-deploy script**.
+```mermaid
+sequenceDiagram
+    participant C as Coolify
+    participant S as Supabase CLI
+    participant D as Database
+    C->>+S: Run pre-deploy.sh
+    S->>+D: Check connection (SUPABASE_DB_URL)
+    D-->>-S: Connection OK
+    S->>+D: Apply migrations (db push)
+    D-->>-S: Migration results
+    S->>+C: Exit code 0 (success) or 1 (fail)
+    C->>C: Abort deployment if migration fails
+    C->>C: Start application deployment only after successful migration
+```
 
-Here's the general approach:
+> **See Also**: [Coolify Deployment Guide](./deployment.md) for detailed implementation steps
 
-1.  **Create a Migration Script:** Create a script (e.g., `migrate.sh`) in your project root that uses the Supabase CLI to apply migrations. This script would typically look like this:
+To ensure safe and reliable database migrations during Coolify deployments, use this pre deploy script on your Coolify deployment for the nextjs application:
 
-    ```bash
-    #!/bin/bash
-    supabase db migrate up
-    ```
+```bash
+./pre-deploy.sh
+```
 
-    Make sure this script is executable (`chmod +x migrate.sh`).
+**Coolify Configuration**:
 
-2.  **Configure Coolify Post-deploy Script:** In your Coolify application settings, configure a **Post-deploy script**. Set the script path to `/app/migrate.sh` (assuming your project root in the Coolify container is `/app`).
+- Set as **Pre-deploy script** in Coolify UI for your nextjs application
+- Required Environment Variables:
 
-**How it works:**
-
-- During deployment, Coolify will first deploy the new application code.
-- _After_ the code deployment is complete, Coolify will execute the Post-deploy script (`migrate.sh`).
-- The `migrate.sh` script will use the Supabase CLI (which needs to be available in your Coolify deployment environment - see "Package.json Scripts" and "Coolify Environment Setup" in `documentation.md`) to apply any pending migrations to your Supabase database.
-- This ensures that the database schema is always up-to-date _before_ the newly deployed application starts serving traffic.
-
-**Important Considerations:**
-
-- **Supabase CLI in Coolify Environment:** Ensure the Supabase CLI is installed and available in your Coolify deployment environment. You might need to include installation steps in your Dockerfile or Coolify build process. _(This will be covered in `documentation.md`)_
-- **Environment Variables:** Your `migrate.sh` script will need access to the necessary Supabase environment variables (e.g., `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`) to connect to your Supabase database. Configure these in your Coolify environment variables settings.
-- **Idempotency:** Supabase migrations are designed to be idempotent. Running `supabase db migrate up` multiple times will only apply new migrations, so it's safe to run this script on each deployment.
-- **Error Handling:** Enhance the `migrate.sh` script with error handling to gracefully manage migration failures and potentially rollback deployments if necessary.
+```env
+SUPABASE_DB_URL
+```
 
 ## Technologies Used
 
@@ -157,4 +214,62 @@ use coolify rollback
 
 ## Testing Strategy
 
+```mermaid
+graph LR
+    A[Playwright Tests] --> B[E2E Browser Tests]
+    A --> C[Mobile Viewport Tests]
+    A --> D[Role-based Access Tests]
+    B --> E[HTML Report]
+    C --> E
+    D --> E
+    E --> F[GitHub Artifacts]
+    F --> G[PR Comments]
+
+    H[Supabase Backup] --> I[Scheduled Every 3 Days]
+    I --> J[Cloud Storage]
+
+    style A fill:#4CAF50,stroke:#333
+    style H fill:#FF9800,stroke:#333
+```
+
 - **E2E Tests:** Playwright tests for end-to-end testing of the application.
+- **CI/CD Workflows:**
+  - `playwright.yml`: Runs automated browser tests on every push/PR
+  - `supabase-backup.yml`: Scheduled production database backups
+- **Key Testing Features:**
+  - Test database reset before each run
+  - Mobile testing configurations
+  - Parallel test execution
+  - HTML report generation
+  - Automatic PR comments with test results
+
+### CI Workflow Configuration
+
+Required GitHub Secrets for testing:
+
+```env
+SUPABASE_TEST_DB_URL
+SUPABASE_SERVICE_ROLE_KEY_TEST
+NEXT_PUBLIC_SUPABASE_TEST_URL
+NEXT_PUBLIC_SUPABASE_TEST_ANON_KEY
+```
+
+Test suites follow a strict structure:
+
+1. Database cleanup in afterAll hooks
+2. Mobile viewport testing
+3. Form validation coverage
+4. Role-based access control verification
+5. Full authentication flow testing
+
+Production backups run every 3 days via:
+
+```yaml
+.github/workflows/supabase-backup.yml
+```
+
+E2E tests follow patterns from:
+
+```yaml
+.github/workflows/playwright.yml
+```

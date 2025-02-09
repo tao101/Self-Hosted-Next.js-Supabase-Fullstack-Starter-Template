@@ -1,97 +1,207 @@
-# Welcome to the SaaS Template Project!
+# Self-Hosted Next.js & Supabase Fullstack Starter Template
 
-This template is designed to kickstart your SaaS application development with a focus on developer experience and a rapid development cycle. It's built using Next.js and self-hosted Supabase, and is designed for easy deployment on Coolify.
+A production-ready template for building modern web applications with Next.js and self-hosted Supabase. Designed for developers who want full control over their stack while maintaining rapid development capabilities. Optimized for deployment on Coolify.
+
+```mermaid
+graph TD
+    subgraph Coolify_Infrastructure["Coolify/Your Infrastructure"]
+        direction TB
+        subgraph NextJS_App["Next.js Application"]
+            direction LR
+            Frontend["Frontend (App Router)
+            - React 19
+            - TypeScript
+            - Shadcn UI
+            - Legend State
+            - SSR/SSG"]
+
+            Backend["Backend
+            - API Routes
+            - Server Actions
+            - Zod Validation
+            - Auth Middleware"]
+
+            Frontend --> Backend
+        end
+
+        subgraph Supabase_Services["Self-Hosted Supabase"]
+            direction TB
+            Auth["Authentication
+            - Email/Password
+            - OAuth
+            - Session Mgmt"]
+            Storage["Storage
+            - S3-compatible
+            - RLS Protected"]
+            Realtime["Realtime
+            - WebSockets
+            - Channel Subs"]
+            PostgreSQL[("PostgreSQL DB
+            - RLS Policies
+            - Migrations
+            - Realtime")]
+
+            Auth --> PostgreSQL
+            Storage --> PostgreSQL
+            Realtime --> PostgreSQL
+        end
+    end
+
+    Backend -->|API Requests| Auth
+    Backend -->|Server Actions| Storage
+    Realtime -->|Live Updates| Frontend
+
+    style NextJS_App fill:#0b0,stroke:#333,stroke-width:2px,color:white
+    style Supabase_Services fill:#06f,stroke:#333,stroke-width:2px,color:white
+    style PostgreSQL fill:#fff,stroke:#333,stroke-width:2px
+
+    classDef green fill:#0b0,stroke:#333,color:white;
+    classDef blue fill:#06f,stroke:#333,color:white;
+    classDef white fill:#fff,stroke:#333;
+
+    class NextJS_App green
+    class Supabase_Services blue
+    class PostgreSQL white
+```
+
+## Key Features:
+
+- 🚀 Full-stack architecture with colocated frontend/backend
+- 🔐 Self-hosted Supabase instance with automated migrations
+- 🛡️ Enterprise-grade security patterns baked in
+- 📊 Built-in observability with Sentry monitoring
+- 📚 Auto-generated API documentation via Swagger
+- ⚡ Lightning-fast development workflow with Legend State
+- 🧪 Comprehensive testing suite (Playwright + Jest)
+- 🔄 Real-time capabilities out-of-the-box
 
 ## Tech Stack
 
 Here are the core technologies used in this project:
 
-- **Frontend & Backend**: [Next.js](https://nextjs.org/) (React framework)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with [Shadcn UI](https://ui.shadcn.com/) component library
-- **State Management**: [Legend State](https://legendapp.com/)
-- **Database & Backend Services**: [Supabase](https://supabase.com/) (PostgreSQL, Authentication, Storage, Realtime)
-- **API Documentation**: [Swagger](https://swagger.io/)
-- **Testing**: [Jest](https://jestjs.io/) and [Playwright](https://playwright.dev/)
-- **Deployment**: [Coolify](https://coolify.io/)
-- **Error Tracking & Monitoring**: [Sentry](https://sentry.io/)
-- **Typescript**: [Typescript](https://www.typescriptlang.org/)
-- **Schema Validation**: [Zod](https://zod.dev/)
+- 🚀 **Full-Stack Framework**: [Next.js](https://nextjs.org/) (App Router + API Routes)
+- 🎨 **UI Components**: [Shadcn UI](https://ui.shadcn.com/) + [Tailwind CSS](https://tailwindcss.com/)
+- 🗄️ **Database & Backend**: Self-hosted [Supabase](https://supabase.com/) (PostgreSQL, Auth, Storage)
+- ⚡ **State Management**: [Legend State](https://legendapp.com/) for reactive state
+- 📜 **API Docs**: Automated Swagger/OpenAPI documentation
+- 🧪 **Testing**: [Playwright](https://playwright.dev/) E2E + [Jest](https://jestjs.io/) unit tests
+- 🛡️ **Security**: Role-based access control & database RLS
+- 📊 **Monitoring**: [Sentry](https://sentry.io/) error tracking
+- 🔄 **Realtime**: Built-in Supabase realtime functionality
 
-For a complete list, see the [Architecture Documentation](architecture.md).
+## Documentation
+
+- [Architecture Overview](architecture.md) - System design and component relationships
+- [Developer Guide](documentation.md) - Detailed setup and configuration instructions
+- [Deployment Guide](deployment.md) - Coolify deployment strategies for all environments
+- [Testing Strategy](documentation.md#testing-strategy) - E2E and unit testing guidelines
 
 ## Getting Started
 
 Follow these steps to get your local development environment set up:
 
-1.  **Prerequisites**: Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed. You'll also need the [Supabase CLI](https://supabase.com/docs/reference/cli/install) and [Docker Desktop](https://www.docker.com/products/docker-desktop/). Refer to the [Developer Documentation](documentation.md) for detailed instructions.
+1. **Prerequisites**:
 
-2.  **Clone the repository**:
+   - Node.js 22+ and npm
+   - Supabase CLI (`npm install -g supabase`)
+   - Docker Desktop (for local Supabase)
+   - Coolify account (optional for deployment)
 
-    ```bash
-    git clone <repository_url>
-    cd <repository_name>
-    ```
+2. **Clone the repository**:
 
-3.  **Install dependencies**:
+   ```bash
+   git clone <repository_url>
+   cd <repository_name>
+   ```
 
-    ```bash
-    npm install
-    ```
+3. **Install dependencies**:
 
-4.  **Start local Supabase**:
+   ```bash
+   npm install
+   ```
 
-    ```bash
-    supabase start
-    ```
+4. **Start local Supabase**:
 
-    This will start the Supabase stack in Docker.
+   ```bash
+   supabase start
+   ```
 
-5.  **Apply database migrations**:
+5. **Apply database migrations**:
 
-    ```bash
-    supabase db migrate up
-    ```
+   ```bash
+   supabase db migrate up
+   ```
 
-6.  **Generate Supabase Typescript types**:
+6. **Generate TypeScript types**:
 
-    ```bash
-    npm run supabase:genTypes
-    ```
+   ```bash
+   npm run supabase:genTypes
+   ```
 
-7.  **Start the Next.js development server**:
-    ```bash
-    npm run dev
-    ```
-    Your application should now be running at `http://localhost:3000`.
+7. **Start development server**:
+   ```bash
+   npm run dev
+   ```
 
-For more detailed setup instructions, please see the [Project Setup](documentation.md#project-setup) section in the `documentation.md` file.
+Your application will be running at `http://localhost:3000`.
 
 ## Development Workflow
 
-- **Branching**: Always create feature branches from the `staging` branch.
-- **Local Testing**: Before creating a PR, run tests locally using `npm run test` to ensure all tests pass.
-- **Pull Requests (PRs)**: Create PRs to merge feature branches into `staging`. Ensure all tests pass and code reviews are completed before merging.
-- **Staging & Production**: The `staging` and `production` branches are automatically deployed to their respective environments via Coolify.
+1. **Branching Strategy**:
 
-For a detailed development workflow, including branching and pull request guidelines, refer to the [Development Workflow Diagram](documentation.md#development-workflow-diagram) and [Branching and Pull Requests](documentation.md#branching-and-pull-requests) sections in `documentation.md`.
+   - Create feature branches from `staging`
+   - PRs must include:
+     - Playwright tests for new features
+     - Supabase migrations if schema changes
+     - Updated documentation
+
+2. **Testing**:
+
+   ```bash
+   # Run all tests
+   npm run test
+
+   # Run specific test suite
+   npm run test tests/e2e/auth.spec.ts
+   ```
+
+3. **Production Deployment**:
+
+   ```bash
+   # Build production bundle
+   npm run build
+
+   # Start production server
+   npm run start
+   ```
 
 ## Useful Scripts
 
-Here are some helpful scripts from `package.json` for development:
+| Script                      | Description                             |
+| --------------------------- | --------------------------------------- |
+| `npm run dev`               | Start development server                |
+| `npm run build`             | Build production bundle                 |
+| `npm run start`             | Start production server                 |
+| `npm run test`              | Run all Playwright tests                |
+| `npm run lint`              | Run ESLint checks                       |
+| `npm run format`            | Format code with Prettier               |
+| `npm run supabase:start`    | Start local Supabase instance           |
+| `npm run supabase:stop`     | Stop local Supabase instance            |
+| `npm run supabase:genTypes` | Generate TypeScript types from Supabase |
 
-- `npm run dev`: Starts the Next.js development server.
-- `npm run build`: Builds the Next.js application for production.
-- `npm run start`: Starts the Next.js production server.
-- `npm run lint`: Runs ESLint for code linting.
-- `npm run test`: Runs Playwright tests.
-- `npm run supabase:genTypes`: Generates TypeScript types from your Supabase database schema.
-- `npm run supabase:migrate`: Applies pending Supabase database migrations locally.
-- `npm run ci:check`: Runs linting, tests, and generates Supabase types for CI checks.
-
-See the [Package.json Scripts](documentation.md#packagejson-scripts) section in `documentation.md` for more details on available scripts.
+See [package.json](package.json) for all available scripts.
 
 ## Documentation
 
-For comprehensive documentation, including detailed setup instructions, deployment information, and coding conventions, please refer to [documentation.md](documentation.md).
+- [Architecture Overview](architecture.md) - System design and component relationships
+- [Developer Guide](documentation.md) - Detailed setup and configuration instructions
+- [Testing Strategy](documentation.md#testing-strategy) - E2E and unit testing guidelines
+- [API Documentation](/api-docs) - Auto-generated Swagger docs (available in development)
 
-Happy coding!
+## License
+
+MIT License
+
+---
+
+**Contribution Guidelines**: We welcome contributions!

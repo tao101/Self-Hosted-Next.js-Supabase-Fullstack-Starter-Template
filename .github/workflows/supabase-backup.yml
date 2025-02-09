@@ -19,7 +19,7 @@ jobs:
           node-version: 18 # Or your preferred Node.js version
 
       - name: Install Supabase CLI
-        run: npm install -g supabase
+        run: npm install  supabase
 
       - name: Generate Backup Filename
         id: filename

@@ -1,14 +1,28 @@
 name: Playwright Tests
 on:
-  push:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to run tests against'
+        required: true
+        default: 'main'
+        type: string
   pull_request:
+    branches: [main, staging]
+    types: [opened, synchronize, reopened]
+
+# Add these permissions
+permissions:
+  contents: read
+  pull-requests: write
+
 concurrency:
-  group: playwright-tests
-  cancel-in-progress: false
+  group: playwright-tests-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
-    timeout-minutes: 60
+    timeout-minutes: 59
     runs-on: ubuntu-latest
     outputs:
       report-url: ${{ steps.report-url.outputs.url }}
@@ -19,14 +33,12 @@ jobs:
         with:
           node-version: lts/*
 
-      - name: Install Supabase CLI
-        run: npm install -g supabase@latest
-
       - name: Reset Test Database
         env:
           TEST_DB_URL: ${{ secrets.SUPABASE_TEST_DB_URL }}
           SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY_TEST }}
-        run: supabase db reset --db-url $TEST_DB_URL
+        run: |
+          echo 'y' | npx supabase db reset --db-url ${{ secrets.SUPABASE_TEST_DB_URL }}
 
       - name: Install dependencies
         run: npm install
@@ -39,7 +51,16 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_TEST_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_TEST_ANON_KEY }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY_TEST }}
-        run: npx playwright test
+          NEXT_PUBLIC_FRONTEND_URL: 'http://localhost:3000'
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          NEXT_PUBLIC_SENTRY_ENABLED: 'false'
+          NEXT_PUBLIC_SUPABASE_TEST_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_TEST_URL }}
+          NEXT_PUBLIC_SUPABASE_TEST_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_TEST_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY_TEST: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY_TEST }}
+          SUPABASE_TEST_DB_URL: ${{ secrets.SUPABASE_TEST_DB_URL }}
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          SUPABASE_TEST_PROJECT_REF: ${{ secrets.SUPABASE_TEST_PROJECT_REF }}
+        run: CI=true npx playwright test --workers '100%'
 
       - name: Upload HTML Report
         if: always()
@@ -63,14 +84,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `🔍 **Playwright Test Report**\n\nView results: ${{ steps.report-url.outputs.url }}\nDownload artifact: [playwright-report](${{ steps.report-url.outputs.url }}/artifacts)`
+              body: `🔍 **Playwright Test Report**\n\nView results: ${{ steps.report-url.outputs.url }}\nDownload artifact: [playwright-report](${{ steps.report-url.outputs.url }}/artifacts/${context.runId})`
             })
-
-      - name: Add Commit Status
-        uses: Sibz/github-status-action@v1
-        with:
-          authToken: ${{ secrets.GITHUB_TOKEN }}
-          context: Playwright Tests
-          description: View test report
-          state: ${{ job.status }}
-          target_url: ${{ steps.report-url.outputs.url }}

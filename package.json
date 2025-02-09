@@ -3,7 +3,8 @@
   "scripts": {
     "setup": "supabase start && npm run supabase:genTypes",
     "dev": "next dev",
-    "build": "next build",
+    "build": "supabase db push --db-url $SUPABASE_DB_URL && next build",
+    "build:local": "supabase  db push  --local && next build",
     "start": "next start",
     "lint": "next lint",
     "supabase:genTypes": "supabase gen types --lang typescript --local > types/supabaseTypes.ts",
@@ -11,7 +12,12 @@
     "supabase:local": "supabase start",
     "supabase:reset": "supabase stop && supabase delete && npm run supabase:local",
     "ci:check": "npm run lint && npm run test ",
-    "test": "playwright test "
+    "test:prod": "supabase db push --db-url $SUPABASE_TEST_DB_URL && playwright test ",
+    "test": "playwright test",
+    "test:chrom": "playwright test --project=chromium   "
+  },
+  "engines": {
+    "node": ">=20.18.1"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -54,7 +60,7 @@
     "server-only": "^0.0.1",
     "sonner": "^1.7.2",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-react": "^5.18.2",
+    "swagger-ui-react": "^5.18.3",
     "vaul": "^1.1.2",
     "zod": "^3.24.1"
   },

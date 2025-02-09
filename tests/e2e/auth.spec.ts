@@ -7,7 +7,6 @@ const TEST_FIRST_NAME = 'Test';
 const TEST_LAST_NAME = 'User';
 
 test.beforeEach(async ({ page }) => {
-  await sleep(1000);
   await page.goto('/');
 });
 
@@ -66,7 +65,11 @@ test.describe.serial('Authentication Flow', () => {
   });
 
   test('should allow existing user to log in with OTP', async ({ page }) => {
+    // Wait 60 seconds to ensure OTP expiry
+    await page.waitForTimeout(60000);
+
     await page.goto('/auth/get-started');
+
     // Fill email form
     await page.getByLabel('Email').fill(TEST_EMAIL);
     await page.getByRole('button', { name: /Send OTP & Magic Link/i }).click();
